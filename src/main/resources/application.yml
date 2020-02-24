@@ -1,0 +1,70 @@
+server:
+  port: 8081
+
+
+spring:
+  datasource:
+
+        url: jdbc:log4jdbc:mysql://localhost:3306/rrp?useUnicode=true&characterEncoding=utf-8&useSSL=true&serverTimezone=Asia/Shanghai
+        driver-class-name: net.sf.log4jdbc.DriverSpy
+        username: root
+        password: root
+
+
+
+
+
+
+  main:
+    allow-bean-definition-overriding: true
+
+
+  servlet:
+    multipart:
+      enabled: true
+      file-size-threshold: 0
+      #单个数据的大小
+      max-file-size: 500MB
+      #总数据的大小
+      max-request-size: 1000MB
+
+  jpa:
+    hibernate:
+      ddl-auto: update
+    show-sql: false
+    open-in-view: true
+    properties:
+      hibernate:
+        enable_lazy_load_no_trans: true
+        generate_statistics: false
+#    properties:
+#      hibernate:
+#        enable_lazy_load_no_trans : true
+#        dialect: com.example.common.config.Utf8
+
+
+
+
+  jackson:
+    time-zone: GMT+8
+
+#  properties:
+#    hibernate:
+#      enable_lazy_load_no_trans : true
+#      dialect: com.example.common.config.Utf8
+  #  security:
+  #    enabled: true
+  #    path: /swagger-ui.html
+  #    user:
+  #      name: user
+  #      password: 123
+
+# slf4j日志配置
+logging:
+  # 配置级别
+  level:
+    # 对所有用到的程序文件都开启日志打印
+    root: info
+    # 按照包的层级来开启日志级别
+  # 日志具体的配置详情
+  config: classpath:config/logback-spring.xml
