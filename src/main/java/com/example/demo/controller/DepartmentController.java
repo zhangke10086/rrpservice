@@ -8,8 +8,8 @@
 
 package com.example.demo.controller;
 
+import com.common.resformat.CommonResult;
 import com.example.demo.entity.Department;
-import com.example.demo.helper.CommonResult;
 import com.example.demo.service.DepartmentService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;

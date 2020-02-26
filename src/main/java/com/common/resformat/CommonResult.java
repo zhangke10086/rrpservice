@@ -1,4 +1,4 @@
-package com.example.demo.helper;
+package com.common.resformat;
 
 public class CommonResult {
     private Integer state;
