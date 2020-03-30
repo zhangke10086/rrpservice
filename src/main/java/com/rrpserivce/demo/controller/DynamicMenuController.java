@@ -18,7 +18,7 @@ public class DynamicMenuController {
     private DynamicMenuService dynamicMenuService;
     @GetMapping(value = "/dynamicMenuService/getDynamicMenu")
     @ApiOperation("根据用户id查找动态菜单")
-    public CommonResult getDynamicMenu(@RequestParam(value = "id") int id) {
+    public CommonResult getDynamicMenu(int id) {
         CommonResult result = new CommonResult();
         try {
             result.setData(dynamicMenuService.getDynamicMenu(id));
