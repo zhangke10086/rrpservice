@@ -10,13 +10,13 @@ import org.springframework.web.bind.annotation.*;
 
 @RestController
 @CrossOrigin()
-@Api(value = "模台参数")
+@Api(value = "模台")
 public class BenchController {
     @Autowired
     private BenchService benchService;
 
     @GetMapping(value = "/bench/getBench")
-    @ApiOperation("获取全部模台参数列表")
+    @ApiOperation("获取全部模台列表")
 
     public CommonResult getBench() {
         CommonResult result = new CommonResult();
@@ -32,7 +32,7 @@ public class BenchController {
     }
 
     @GetMapping(value = "/bench/getBenchById")
-    @ApiOperation("根据id查找模台参数")
+    @ApiOperation("根据id查找模台")
     public CommonResult getBenchById(@RequestBody int id) {
         CommonResult result = new CommonResult();
         try {
@@ -47,7 +47,7 @@ public class BenchController {
     }
 
     @PutMapping(value = "/bench/updateBench")
-    @ApiOperation("修改模台参数")
+    @ApiOperation("修改模台")
     public CommonResult updateBench(@RequestBody Bench bench) {
         CommonResult result = new CommonResult();
         try {
