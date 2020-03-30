@@ -29,6 +29,11 @@ public class User {
     private Date login_time;
     @OneToOne
     private Role role;
+
+    public void setLogin_time(Date login_time) {
+        this.login_time = login_time;
+    }
+
     @OneToOne
     private Company company;
 
