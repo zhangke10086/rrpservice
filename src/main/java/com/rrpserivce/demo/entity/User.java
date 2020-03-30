@@ -31,4 +31,8 @@ public class User {
     private Role role;
     @OneToOne
     private Company company;
+
+    public void setPassword(String password) {
+        this.password = password;
+    }
 }
