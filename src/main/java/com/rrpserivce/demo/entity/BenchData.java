@@ -16,7 +16,7 @@ public class BenchData {
     private String number;
     @Column
     private Date time;
-    @OneToOne
+    @ManyToOne()
     private Bench bench;
 
 }

@@ -2,7 +2,9 @@ package com.rrpserivce.demo.controller;
 
 import com.rrpserivce.demo.entity.Bench;
 import com.common.resformat.CommonResult;
+import com.rrpserivce.demo.service.BenchDataService;
 import com.rrpserivce.demo.service.BenchService;
+import com.rrpserivce.demo.service.ProcessDataService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,6 +16,10 @@ import org.springframework.web.bind.annotation.*;
 public class BenchController {
     @Autowired
     private BenchService benchService;
+@Autowired
+    private BenchDataService benchDataService;
+@Autowired
+    private ProcessDataService processDataService;
 
     @GetMapping(value = "/bench/getBench")
     @ApiOperation("获取全部模台列表")
@@ -67,6 +73,8 @@ public class BenchController {
     public CommonResult deleteById(@RequestBody int id) {
         CommonResult result = new CommonResult();
         try {
+            processDataService.deleteByBench(id);
+            benchDataService.deleteByBench(id);
             benchService.deleteById(id);
             return result;
         } catch (Exception e) {

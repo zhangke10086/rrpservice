@@ -37,4 +37,14 @@ public class ProcessDataService {
         processDataRepository.deleteById(id);
     }
 
+    //根据bench_id查找
+    public ProcessData getByBench(int bench_id) {
+        return processDataRepository.getByBench(bench_id);
+    }
+
+    //根据bench_id删除
+    public void deleteByBench(int bench_id) {
+        processDataRepository.deleteByBench(bench_id);
+    }
+
 }
