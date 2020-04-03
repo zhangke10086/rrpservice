@@ -46,6 +46,21 @@ public class ProcessDataController {
         }
     }
 
+    @GetMapping(value = "/processData/getProcessDataByBench")
+    @ApiOperation("根据bench查找生产参数")
+    public CommonResult getProcessDataByBench(@RequestParam int bench_id) {
+        CommonResult result = new CommonResult();
+        try {
+            result.setData(processDataService.getByBench(bench_id));
+            return result;
+        } catch (Exception e) {
+            e.printStackTrace();
+            result.setState(500);
+            result.setMsg("获取失败");
+            return result;
+        }
+    }
+
     @PutMapping(value = "/processData/updateProcessData")
     @ApiOperation("修改生产参数")
     public CommonResult updateProcessData(@RequestBody ProcessData processData) {

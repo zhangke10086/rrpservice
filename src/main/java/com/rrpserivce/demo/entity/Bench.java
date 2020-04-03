@@ -18,7 +18,7 @@ public class Bench {
     @Column(length = 12)
     private String number;
     @Column()
-    private Date time;
+    private String description;
     @Column(length = 12)
     private String workshop;
 

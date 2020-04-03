@@ -2,7 +2,9 @@ package com.rrpserivce.demo.controller;
 
 import com.rrpserivce.demo.entity.Bench;
 import com.common.resformat.CommonResult;
+import com.rrpserivce.demo.service.BenchDataService;
 import com.rrpserivce.demo.service.BenchService;
+import com.rrpserivce.demo.service.ProcessDataService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -10,13 +12,17 @@ import org.springframework.web.bind.annotation.*;
 
 @RestController
 @CrossOrigin()
-@Api(value = "模台参数")
+@Api(value = "模台")
 public class BenchController {
     @Autowired
     private BenchService benchService;
+@Autowired
+    private BenchDataService benchDataService;
+@Autowired
+    private ProcessDataService processDataService;
 
     @GetMapping(value = "/bench/getBench")
-    @ApiOperation("获取全部模台参数列表")
+    @ApiOperation("获取全部模台列表")
 
     public CommonResult getBench() {
         CommonResult result = new CommonResult();
@@ -32,7 +38,7 @@ public class BenchController {
     }
 
     @GetMapping(value = "/bench/getBenchById")
-    @ApiOperation("根据id查找模台参数")
+    @ApiOperation("根据id查找模台")
     public CommonResult getBenchById(@RequestBody int id) {
         CommonResult result = new CommonResult();
         try {
@@ -47,7 +53,7 @@ public class BenchController {
     }
 
     @PutMapping(value = "/bench/updateBench")
-    @ApiOperation("修改模台参数")
+    @ApiOperation("修改模台")
     public CommonResult updateBench(@RequestBody Bench bench) {
         CommonResult result = new CommonResult();
         try {
@@ -67,6 +73,8 @@ public class BenchController {
     public CommonResult deleteById(@RequestBody int id) {
         CommonResult result = new CommonResult();
         try {
+            processDataService.deleteByBench(id);
+            benchDataService.deleteByBench(id);
             benchService.deleteById(id);
             return result;
         } catch (Exception e) {

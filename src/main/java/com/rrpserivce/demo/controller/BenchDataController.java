@@ -1,8 +1,8 @@
 package com.rrpserivce.demo.controller;
 
-import com.rrpserivce.demo.entity.BenchManage;
+import com.rrpserivce.demo.entity.BenchData;
 import com.common.resformat.CommonResult;
-import com.rrpserivce.demo.service.BenchManageService;
+import com.rrpserivce.demo.service.BenchDataService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -10,18 +10,18 @@ import org.springframework.web.bind.annotation.*;
 
 @RestController
 @CrossOrigin()
-@Api(value = "模台")
-public class BenchManageController {
+@Api(value = "模台参数")
+public class BenchDataController {
     @Autowired
-    private BenchManageService benchManageService;
+    private BenchDataService benchDataService;
 
-    @GetMapping(value = "/benchManage/getBenchManage")
-    @ApiOperation("获取全部模台列表")
+    @GetMapping(value = "/benchData/getBenchData")
+    @ApiOperation("获取全部模台参数列表")
 
-    public CommonResult getBenchManage() {
+    public CommonResult getBenchData() {
         CommonResult result = new CommonResult();
         try {
-            result.setData(benchManageService.findAll());
+            result.setData(benchDataService.findAll());
             return result;
         } catch (Exception e) {
             e.printStackTrace();
@@ -31,12 +31,12 @@ public class BenchManageController {
         }
     }
 
-    @GetMapping(value = "/benchManage/getBenchManageById")
-    @ApiOperation("根据id查找模台")
-    public CommonResult getBenchManageById(@RequestBody int id) {
+    @GetMapping(value = "/benchData/getBenchDataById")
+    @ApiOperation("根据id查找模台参数")
+    public CommonResult getBenchDataById(@RequestBody int id) {
         CommonResult result = new CommonResult();
         try {
-            result.setData(benchManageService.findById(id));
+            result.setData(benchDataService.findById(id));
             return result;
         } catch (Exception e) {
             e.printStackTrace();
@@ -46,12 +46,12 @@ public class BenchManageController {
         }
     }
 
-    @PutMapping(value = "/benchManage/updateBenchManage")
-    @ApiOperation("修改模台")
-    public CommonResult updateBenchManage(@RequestBody BenchManage benchManage) {
+    @PutMapping(value = "/benchData/updateBenchData")
+    @ApiOperation("修改模台参数")
+    public CommonResult updateBenchData(@RequestBody BenchData benchData) {
         CommonResult result = new CommonResult();
         try {
-            benchManageService.update(benchManage);
+            benchDataService.update(benchData);
             return result;
         } catch (Exception e) {
             e.printStackTrace();
@@ -62,12 +62,12 @@ public class BenchManageController {
     }
 
 
-    @PostMapping(value = "/benchManage/deleteById")
+    @PostMapping(value = "/benchData/deleteById")
     @ApiOperation("删除")
     public CommonResult deleteById(@RequestBody int id) {
         CommonResult result = new CommonResult();
         try {
-            benchManageService.deleteById(id);
+            benchDataService.deleteById(id);
             return result;
         } catch (Exception e) {
             e.printStackTrace();
@@ -77,12 +77,12 @@ public class BenchManageController {
         }
     }
 
-    @PostMapping(value = "/benchManage/addBenchManage")
+    @PostMapping(value = "/benchData/addBenchData")
     @ApiOperation("增加")
-    public CommonResult add(@RequestBody BenchManage benchManage) {
+    public CommonResult add(@RequestBody BenchData benchData) {
         CommonResult result = new CommonResult();
         try {
-            benchManageService.add(benchManage);
+            benchDataService.add(benchData);
             return result;
         } catch (Exception e) {
             e.printStackTrace();

@@ -50,6 +50,8 @@ public class RobotData {
     @Column()
     private Double concretrreceive_coordinate_y;
     @Column()
+    private Double concretrreceive_coordinate_z;
+    @Column()
     private Integer vibrate_time;
     @Column()
     private Integer vibration_frequency_1;
@@ -72,7 +74,7 @@ public class RobotData {
     @Column()
     private Double reversedweight_length;
     @Column()
-    private Double reversedweight_length_positive;
+    private Double reversedweight_lengthpositive;
     @Column()
     private Double time_lubrication;
     @Column()
