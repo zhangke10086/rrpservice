@@ -5,6 +5,7 @@ import com.rrpserivce.demo.entity.User;
 import com.rrpserivce.demo.service.UserService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
+import io.swagger.models.auth.In;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -60,6 +61,21 @@ public class UserController {
         }
     }
 
+    @PostMapping(value = "/user/resetPassword")
+    @ApiOperation("修改系")
+    public CommonResult resetPassword(@RequestBody Integer id){
+        CommonResult result = new CommonResult();
+        try {
+            userService.resetPassword(id);
+            return result;
+        } catch (Exception e) {
+            e.printStackTrace();
+            result.setState(500);
+            result.setMsg("失败");
+            return result;
+        }
+    }
+
     @DeleteMapping(value = "/user/deleteById")
     @ApiOperation("删除")
     public CommonResult deleteById(@RequestParam(value = "id") int id){
@@ -76,8 +92,8 @@ public class UserController {
     }
 
     @PostMapping(value = "/user/addUser")
-    @ApiOperation("增加")
-    public CommonResult add(@RequestParam(value = "id") User user){
+    @ApiOperation(value = "增加企业")
+    public CommonResult add(@RequestBody User user){
         CommonResult result = new CommonResult();
         try {
             userService.add(user);
