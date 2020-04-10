@@ -22,7 +22,7 @@ public class UserService {
     public User findById(Integer id){
 //        Option<User> option = userRepository.findById(id);
         User user = userRepository.findById(id).get();
-        user.setPassword(null);
+//        user.setPassword(null);
         return user;
     }
 
