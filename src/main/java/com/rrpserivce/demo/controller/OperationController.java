@@ -17,7 +17,7 @@ public class OperationController {
     private OperationService operationService;
 
     // 未完成，数据不对
-    @GetMapping(value = "/operation/getAuthority")
+    @GetMapping(value = "/operation/getOperations")
     @ApiOperation("获取权限列表")
     public CommonResult getUser() {
         CommonResult result = new CommonResult();

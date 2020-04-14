@@ -3,8 +3,7 @@ package com.rrpserivce.demo.entity;
 import lombok.Data;
 
 import javax.persistence.*;
-import java.util.HashSet;
-import java.util.Set;
+
 
 @Entity
 @Table(name = "operation")
@@ -18,12 +17,12 @@ public class Operation {
     @Column(name = "method")
     private String method;
 
-    @ManyToMany(cascade = {CascadeType.PERSIST,CascadeType.MERGE}, fetch = FetchType.EAGER)
-    @JoinTable(
-            name = "authority",
-            joinColumns = {@JoinColumn(name = "role_menu_ass_id")},
-            inverseJoinColumns = {@JoinColumn(name = "operation_id")}
-    )
-    private Set<Menu> roles = new HashSet<>();
+//    @ManyToMany(cascade = {CascadeType.PERSIST,CascadeType.MERGE}, fetch = FetchType.EAGER)
+//    @JoinTable(
+//            name = "authority",
+//            joinColumns = {@JoinColumn(name = "role_menu_ass_id")},
+//            inverseJoinColumns = {@JoinColumn(name = "operation_id")}
+//    )
+//    private Set<Menu> roles = new HashSet<>();
 
 }

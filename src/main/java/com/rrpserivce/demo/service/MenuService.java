@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Set;
 
 @Service
 public class MenuService {
@@ -19,6 +20,10 @@ public class MenuService {
     //虽然多半不会用到全部，但是先加上以防万一
     public List<Menu> findAll() {
         return menuRepository.findAll();
+    }
+
+    public List<Menu> getMenusByMenuNotNull() {
+        return menuRepository.getMenusByMenuNotNull();
     }
 
     public Menu findById(Integer id){
