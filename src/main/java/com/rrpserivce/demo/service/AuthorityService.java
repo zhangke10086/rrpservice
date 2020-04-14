@@ -34,7 +34,6 @@ public class AuthorityService {
      */
     @Transactional(rollbackFor = Exception.class)
     public void add(CompletedAuthority completedAuthority){
-//        System.out.println("111111111111111111111111\n" + JSON.toJSONString(completedAuthority));
         roleRepository.save(completedAuthority.getToAddRole());
 
         List<RoleMenuOperation> roleMenuOperations = completedAuthority.getAuthorityArray();
@@ -72,7 +71,7 @@ public class AuthorityService {
     public Authority find(int id){return authorityRepository.findById(id).get();}
 
 
-    
+
     public Set<RoleMenuOperation> findByRoleId(int role_id) {
         List<Authority> authorities =  authorityRepository.findByRoleId(role_id);
         Set<RoleMenuOperation> roleMenuOperations = new HashSet<>();
