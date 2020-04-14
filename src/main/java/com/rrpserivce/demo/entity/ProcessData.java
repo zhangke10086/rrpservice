@@ -39,7 +39,7 @@ public class ProcessData {
     private Double crop_X_notpositive_distance;
     @Column()
     private Double enddistance;
-    @OneToOne
+    @ManyToOne()
     private Bench bench;
 
 }
