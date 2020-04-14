@@ -26,4 +26,8 @@ public class Role {
             inverseJoinColumns = {@JoinColumn(name = "menu_id")}
     )
     private Set<Menu> menus = new HashSet<>();
+
+    public int getId() {
+        return id;
+    }
 }

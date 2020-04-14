@@ -28,4 +28,10 @@ public class RoleMenuOperation {
     public void setOperation(int operation) {
         Operation = operation;
     }
+
+    public RoleMenuOperation(int role, int menu, int operation) {
+        Role = role;
+        Menu = menu;
+        Operation = operation;
+    }
 }

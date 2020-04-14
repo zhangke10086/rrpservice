@@ -30,4 +30,16 @@ public class Authority {
         this.operation = operation;
         this.roleMenu = roleMenu;
     }
+
+    public int getId() {
+        return id;
+    }
+
+    public int getOperation() {
+        return operation;
+    }
+
+    public int getRoleMenu() {
+        return roleMenu;
+    }
 }

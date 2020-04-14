@@ -14,6 +14,8 @@ import org.springframework.web.bind.annotation.*;
 public class RoleController {
     @Autowired
     private RoleService roleService;
+
+    // 先不用了,集成到Authority
     @PostMapping(value = "/role/addRole")
     @ApiOperation(value = "增加身份")
     public CommonResult addRole(@RequestBody Role role){
