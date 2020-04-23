@@ -15,6 +15,21 @@ import org.springframework.web.bind.annotation.*;
 public class MenuController {
     @Autowired
     private MenuService menuService;
+    @GetMapping(value = "/menu/getMenusByMenuNotNull")
+    @ApiOperation("获取全部菜单列表")
+    public CommonResult getMenusByMenuNotNull() {
+        CommonResult result = new CommonResult();
+        try {
+            result.setData(menuService.getMenusByMenuNotNull());
+            return result;
+        } catch (Exception e){
+            e.printStackTrace();
+            result.setState(500);
+            result.setMsg("获取失败");
+            return result;
+        }
+    }
+
     @GetMapping(value = "/menu/getMenus")
     @ApiOperation("获取全部菜单列表")
     public CommonResult getMenus() {
@@ -29,6 +44,7 @@ public class MenuController {
             return result;
         }
     }
+
 
     @GetMapping(value = "/menu/getMenuById")
     @ApiOperation("根据id查找菜单")

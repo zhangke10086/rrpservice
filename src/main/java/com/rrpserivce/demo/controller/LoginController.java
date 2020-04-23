@@ -20,7 +20,7 @@ public class LoginController {
                                     @RequestParam(value = "password") String password) {
         CommonResult result = new CommonResult();
         try {
-            result.setData(loginService.findUserByUserNameAndPassword(username, password));
+            result.setData(loginService.findUserByUsernameAndPassword(username, password));
             return result;
         } catch (Exception e){
             e.printStackTrace();

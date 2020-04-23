@@ -7,6 +7,7 @@ import com.rrpserivce.demo.repository.DynamicMenuRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.HashSet;
 import java.util.Set;
 import java.util.TreeSet;
 
@@ -19,6 +20,7 @@ public class DynamicMenuService {
 
     /**
      * 你品，细品
+     * ps: 按需修改过，实现方式未精简，有空改
      * @param user_id
      * @return
      */
@@ -63,6 +65,32 @@ public class DynamicMenuService {
     }
     public Set<Menu> getDynamicMenuByMenu_id(Integer user_id, Integer menu_id) {
         return dynamicMenuRepository.getDynamicMenuByMenu_id(user_id, menu_id);
+    }
+
+    /**
+     * 获得所有的菜单
+     * 将其转化为分级菜单的格式
+     * ps: 按需修改过，实现方式未精简，有空改
+     * @return
+     */
+    public Set<DynamicMenu> getAllMenus(){
+        Set<Menu> initialList =  new HashSet<>(menuService.findAll());
+        Set<DynamicMenu> finalList = new TreeSet<>();
+        for (Menu initialListMenu: initialList){
+            String parentMenu = initialListMenu.getMenu();
+            if (parentMenu != null)
+                finalList.add(new DynamicMenu(
+                        menuService.findById(Integer.parseInt(parentMenu)),
+                        dynamicMenuRepository.getAllChildrenMenu(Integer.parseInt(parentMenu))));
+        }
+        // 该加不进去的就加不进去，
+        for (Menu initialListMenu: initialList) {
+            String parentMenu = initialListMenu.getMenu();
+            // 避免无谓的硬添
+            if (parentMenu == null)
+                finalList.add(new DynamicMenu(menuService.findById(initialListMenu.getId()), null));
+        }
+        return finalList;
     }
 
     /*[
@@ -159,4 +187,8 @@ public class DynamicMenuService {
     }
   ]
   */
+
+    public Set<Menu> getAllNotNullMenus() {
+        return dynamicMenuRepository.getAllNotNullMenus();
+    }
 }

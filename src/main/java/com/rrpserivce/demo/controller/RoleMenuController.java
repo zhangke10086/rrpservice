@@ -16,7 +16,7 @@ public class RoleMenuController {
     @Autowired
     private RoleMenuService roleMenuService;
 
-    // 已经改了，先不用这个
+    // 已经改了
     @GetMapping(value = "/roleMenu/getRoleMenus")
     @ApiOperation("获取全部role-menu列表")
     public CommonResult getUser() {

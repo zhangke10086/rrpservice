@@ -14,5 +14,9 @@ public class RoleMenuService {
     public List<RoleMenu> findAll() {
         return roleMenuRepository.findAll();
     }
+//
+//    public RoleMenu findByRoleAndMenu(int role, int menu) {
+//        return roleMenuRepository.findByRoleAndMenu(role, menu);
+//    }
 
 }

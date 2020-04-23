@@ -14,6 +14,8 @@ import org.springframework.web.bind.annotation.*;
 public class RoleController {
     @Autowired
     private RoleService roleService;
+
+    // 先不用了,集成到Authority
     @PostMapping(value = "/role/addRole")
     @ApiOperation(value = "增加身份")
     public CommonResult addRole(@RequestBody Role role){
@@ -92,4 +94,23 @@ public class RoleController {
         }
     }
 
+
+    /**
+     * 用不到了，改为前台实现
+     * @return
+     */
+    @GetMapping(value = "/role/getRolesMaxId")
+    @ApiOperation(value = "查找所有身份")
+    public CommonResult getMaxId(){
+        CommonResult result = new CommonResult();
+        try {
+            result.setData(roleService.getMaxId());
+            return result;
+        } catch (Exception e) {
+            e.printStackTrace();
+            result.setState(500);
+            result.setMsg("获取失败");
+            return result;
+        }
+    }
 }

@@ -32,4 +32,12 @@ public class RoleService {
         roleRepository.deleteById(id);
     }
 
+    /**
+     * 用不到了，改为前台实现
+     * @return
+     */
+    public Integer getMaxId() {
+        return roleRepository.getMaxId();
+    }
+
 }

@@ -46,11 +46,26 @@ public class UserController {
     }
 
     @PutMapping(value = "/user/updateUser")
-    @ApiOperation("修改系")
+    @ApiOperation("修改用户")
     public CommonResult updateUser(@RequestBody User user){
         CommonResult result = new CommonResult();
         try {
             userService.update(user);
+            return result;
+        } catch (Exception e) {
+            e.printStackTrace();
+            result.setState(500);
+            result.setMsg("失败");
+            return result;
+        }
+    }
+
+    @PostMapping(value = "/user/resetPassword")
+    @ApiOperation("修改密码")
+    public CommonResult resetPassword(@RequestBody Integer id){
+        CommonResult result = new CommonResult();
+        try {
+            userService.resetPassword(id);
             return result;
         } catch (Exception e) {
             e.printStackTrace();
@@ -76,8 +91,8 @@ public class UserController {
     }
 
     @PostMapping(value = "/user/addUser")
-    @ApiOperation("增加")
-    public CommonResult add(@RequestParam(value = "id") User user){
+    @ApiOperation(value = "增加企业")
+    public CommonResult add(@RequestBody User user){
         CommonResult result = new CommonResult();
         try {
             userService.add(user);

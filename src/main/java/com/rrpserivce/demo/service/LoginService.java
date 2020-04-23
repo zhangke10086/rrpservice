@@ -1,5 +1,6 @@
 package com.rrpserivce.demo.service;
 
+import com.alibaba.fastjson.JSON;
 import com.rrpserivce.demo.entity.User;
 import com.rrpserivce.demo.repository.LoginRepository;
 import com.rrpserivce.demo.repository.MenuRepository;
@@ -13,10 +14,11 @@ public class LoginService {
     @Autowired
     private LoginRepository loginRepository;
 
-    public User findUserByUserNameAndPassword(String username, String password) {
-        User user = loginRepository.findUserByUserNameAndPassword(username,password);
-        user.setPassword(null);
+    public User findUserByUsernameAndPassword(String username, String password) {
+        User user = loginRepository.findUserByUsernameAndPassword(username,password);
         user.setLogin_time(new Date());
+        loginRepository.save(user);
+        user.setPassword(null);
         return user;
     }
 }
