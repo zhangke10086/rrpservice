@@ -84,4 +84,34 @@ public class AuthorityService {
         }
         return roleMenuOperations;
     }
+
+
+
+    public Set<MenuOperations> findByRoleIdWhenLogin(int role_id) {
+        List<Authority> authorities =  authorityRepository.findByRoleId(role_id);
+        Set<RoleMenuOperation> roleMenuOperations = new HashSet<>();
+
+        // 结果的集合
+        Set<MenuOperations> menuOperationsSet = new HashSet<>();
+
+        for (Authority authority: authorities) {
+            roleMenuOperations.add(new RoleMenuOperation(
+                    roleMenuRepository.findById(authority.getRoleMenu()).get().getRole(),
+                    roleMenuRepository.findById(authority.getRoleMenu()).get().getMenu(),
+                    authority.getOperation()
+            ));
+        }
+
+        //复杂度
+        // 先单个抽出来放到menuOperationsSet
+        for (RoleMenuOperation roleMenuOperation: roleMenuOperations)
+            menuOperationsSet.add(new MenuOperations(roleMenuOperation.getMenu()));
+
+        // 然后对menuOperationsSet的operations修改
+        for (MenuOperations menuOperations: menuOperationsSet) for (RoleMenuOperation roleMenuOperation: roleMenuOperations)
+                if (menuOperations.getMenu() == roleMenuOperation.getMenu()) menuOperations.addOperation(roleMenuOperation.getOperation());
+
+        return menuOperationsSet;
+    }
+
 }

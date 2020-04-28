@@ -76,4 +76,19 @@ public class AuthorityController {
             return result;
         }
     }
+
+    @GetMapping(value = "/authority/findAuthorityByRoleIdWhenLogin")
+    @ApiOperation(value = "按role_id查找")
+    public CommonResult findByRoleWhenLoginIn(@RequestParam(value = "role_id")int id){
+        CommonResult result = new CommonResult();
+        try {
+            result.setData(authorityService.findByRoleIdWhenLogin(id));
+            return result;
+        } catch (Exception e){
+            e.printStackTrace();
+            result.setState(500);
+            result.setMsg("获取失败");
+            return result;
+        }
+    }
 }
