@@ -107,9 +107,9 @@ public class AuthorityService {
         for (RoleMenuOperation roleMenuOperation: roleMenuOperations)
             menuOperationsSet.add(new MenuOperations(roleMenuOperation.getMenu()));
 
-        // 然后对menuOperationsSet的operations修改
-        for (MenuOperations menuOperations: menuOperationsSet) for (RoleMenuOperation roleMenuOperation: roleMenuOperations)
-                if (menuOperations.getMenu() == roleMenuOperation.getMenu()) menuOperations.addOperation(roleMenuOperation.getOperation());
+        // 然后对menuOperationsSet的operations修改(先roleMenuOperations，重复只会出现一次，避免多余检查)
+        for (RoleMenuOperation roleMenuOperation: roleMenuOperations) for (MenuOperations menuOperations: menuOperationsSet)
+                if (menuOperations.getMenu() == roleMenuOperation.getMenu()) { menuOperations.addOperation(roleMenuOperation.getOperation());break;}
 
         return menuOperationsSet;
     }
