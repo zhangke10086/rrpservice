@@ -22,6 +22,8 @@ public class Lease {
     private String startTime;
     @Column(name = "payment_situation")
     private String paymentSituation;
+    @Column(name = "connector")
+    private String connector;
     @Column(name = "workshop_id")
     private String workshopId;
     @Column(name = "internal_id")
