@@ -124,4 +124,18 @@ public class LeaseController {
             return result;
         }
     }
+    @PostMapping(value = "/lease/cancleRemind")
+    @ApiOperation(value = "取消提醒")
+    public CommonResult cancleRemind(@RequestBody String id){
+        CommonResult result = new CommonResult();
+        try {
+            leaseService.cancleRemind(id);
+            return result;
+        } catch (Exception e){
+            e.printStackTrace();
+            result.setState(500);
+            result.setMsg("获取失败");
+            return result;
+        }
+    }
 }

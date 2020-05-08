@@ -36,4 +36,5 @@ public class Lease {
     @OneToOne
     @JoinColumn(name = "robot_id")
     private Robot robot;
+    private Character remind;
 }
