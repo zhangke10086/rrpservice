@@ -17,6 +17,10 @@ public class BenchService {
         return benchRepository.findAll();
     }
 
+    public List<Bench> findAllByRobot(String robot_id) {
+        return benchRepository.getByRobot(robot_id);
+    }
+
     //根据id查找
     public Bench findById(int id) {
         return benchRepository.findById(id).get();
