@@ -138,4 +138,34 @@ public class LeaseController {
             return result;
         }
     }
+
+    @PostMapping(value = "/lease/start")
+    @ApiOperation(value = "启用")
+    public CommonResult start(@RequestBody Lease lease){
+        CommonResult result = new CommonResult();
+        try {
+            leaseService.start(lease);
+            return result;
+        } catch (Exception e){
+            e.printStackTrace();
+            result.setState(500);
+            result.setMsg("获取失败");
+            return result;
+        }
+    }
+
+    @PostMapping(value = "/lease/stop")
+    @ApiOperation(value = "停用")
+    public CommonResult stop(@RequestBody Lease lease){
+        CommonResult result = new CommonResult();
+        try {
+            leaseService.stop(lease);
+            return result;
+        } catch (Exception e){
+            e.printStackTrace();
+            result.setState(500);
+            result.setMsg("获取失败");
+            return result;
+        }
+    }
 }
