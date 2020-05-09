@@ -39,7 +39,7 @@ public class BenchController {
 @GetMapping(value = "/bench/getBenchByRobot")
     @ApiOperation("获取全部模台列表")
 
-    public CommonResult getBenchByRobot(@RequestBody String robot_id) {
+    public CommonResult getBenchByRobot(String robot_id) {
         CommonResult result = new CommonResult();
         try {
             result.setData(benchService.findAllByRobot(robot_id));
@@ -54,7 +54,7 @@ public class BenchController {
 
     @GetMapping(value = "/bench/getBenchById")
     @ApiOperation("根据id查找模台")
-    public CommonResult getBenchById(@RequestBody int id) {
+    public CommonResult getBenchById(int id) {
         CommonResult result = new CommonResult();
         try {
             result.setData(benchService.findById(id));
