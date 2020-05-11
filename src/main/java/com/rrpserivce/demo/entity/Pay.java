@@ -12,13 +12,10 @@ public class Pay {
     @GeneratedValue(strategy=GenerationType.AUTO)
     @Column(name = "id")
     private int id;
-
     @Column(name = "payment_amount")
     private int paymentAmount;
-    @Column(name = "contract_id")
-    private String contractId;
-    @Column(name = "payment_time")
 
+    @Column(name = "payment_time")
     private String paymentTime;
     @Column(name = "payment_deadline")
     private String paymentDeadline;
@@ -26,16 +23,15 @@ public class Pay {
     private String examineSituation;
     @Column(name = "payment_duration")
     private String paymentDuration;
-    @Column(name = "contract_content")
-    private String contractContent;
-    @Column(name = "connector")
-    private String connector;
-    @Column(name = "use_time")
-    private String useTime;
+    @Column(name = "payment_voucher")
+    private String paymentVoucher ;
     @OneToOne
     @JoinColumn(name = "company_id")
     private Company company;
     @OneToOne
     @JoinColumn(name = "robot_id")
     private Robot robot;
+    @OneToOne
+    @JoinColumn(name = "lease_id")
+    private Lease lease;
 }

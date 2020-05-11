@@ -1,7 +1,9 @@
 package com.rrpserivce.demo.service;
 
 import com.rrpserivce.demo.entity.Company;
+import com.rrpserivce.demo.entity.Robot;
 import com.rrpserivce.demo.repository.CompanyRepository;
+import com.rrpserivce.demo.repository.RobotRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -11,6 +13,7 @@ import java.util.List;
 public class CompanyService {
     @Autowired
     private CompanyRepository companyRepository;
+    private RobotRepository robotRepository;
     //增加
     public void add(Company company){companyRepository.save(company);}
     //根据id删除
@@ -30,4 +33,9 @@ public class CompanyService {
         }
         return companyRepository.findAllByNameLike("%" + sql);
     }
+
+    public List<Company> findAllBy2Keys(String key1,String key2){
+        return companyRepository.findAllBy2Keys(key1,key2);
+    }
+
 }

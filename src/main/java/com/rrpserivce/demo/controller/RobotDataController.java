@@ -33,7 +33,7 @@ public class RobotDataController {
 
     @GetMapping(value = "/robotData/getRobotDataById")
     @ApiOperation("根据id查找模台参数")
-    public CommonResult getRobotDataById(@RequestBody int id) {
+    public CommonResult getRobotDataById(int id) {
         CommonResult result = new CommonResult();
         try {
             result.setData(robotDataService.findById(id));

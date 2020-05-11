@@ -36,10 +36,25 @@ public class BenchController {
             return result;
         }
     }
+@GetMapping(value = "/bench/getBenchByRobot")
+    @ApiOperation("获取全部模台列表")
+
+    public CommonResult getBenchByRobot(String robot_id) {
+        CommonResult result = new CommonResult();
+        try {
+            result.setData(benchService.findAllByRobot(robot_id));
+            return result;
+        } catch (Exception e) {
+            e.printStackTrace();
+            result.setState(500);
+            result.setMsg("获取失败");
+            return result;
+        }
+    }
 
     @GetMapping(value = "/bench/getBenchById")
     @ApiOperation("根据id查找模台")
-    public CommonResult getBenchById(@RequestBody int id) {
+    public CommonResult getBenchById(int id) {
         CommonResult result = new CommonResult();
         try {
             result.setData(benchService.findById(id));

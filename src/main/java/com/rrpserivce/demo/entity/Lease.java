@@ -3,6 +3,7 @@ package com.rrpserivce.demo.entity;
 import lombok.Data;
 
 import javax.persistence.*;
+import java.util.Date;
 
 @Entity
 @Table(name = "lease")
@@ -19,9 +20,11 @@ public class Lease {
     @Column(name = "cost_month")
     private String costMonth;
     @Column(name = "start_time")
-    private String startTime;
+    private Date startTime;
     @Column(name = "payment_situation")
     private String paymentSituation;
+    @Column(name = "connector")
+    private String connector;
     @Column(name = "workshop_id")
     private String workshopId;
     @Column(name = "internal_id")
@@ -34,4 +37,5 @@ public class Lease {
     @OneToOne
     @JoinColumn(name = "robot_id")
     private Robot robot;
+    private Character remind;
 }
