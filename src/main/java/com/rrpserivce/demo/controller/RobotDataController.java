@@ -31,6 +31,22 @@ public class RobotDataController {
         }
     }
 
+    @GetMapping(value = "/robotData/getRobotDataByRobot")
+    @ApiOperation("根据机器人获取全部列表")
+
+    public CommonResult getRobotDataByRobot(String robot_id) {
+        CommonResult result = new CommonResult();
+        try {
+            result.setData(robotDataService.findAllByRobot(robot_id));
+            return result;
+        } catch (Exception e) {
+            e.printStackTrace();
+            result.setState(500);
+            result.setMsg("获取失败");
+            return result;
+        }
+    }
+
     @GetMapping(value = "/robotData/getRobotDataById")
     @ApiOperation("根据id查找模台参数")
     public CommonResult getRobotDataById(int id) {

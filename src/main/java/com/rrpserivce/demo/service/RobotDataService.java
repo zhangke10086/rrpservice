@@ -1,5 +1,6 @@
 package com.rrpserivce.demo.service;
 
+import com.rrpserivce.demo.entity.BenchCount;
 import com.rrpserivce.demo.entity.RobotData;
 import com.rrpserivce.demo.repository.RobotDataRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -35,6 +36,10 @@ public class RobotDataService {
     //根据id删除
     public void deleteById(int id) {
         robotDataRepository.deleteById(id);
+    }
+
+    public List<RobotData> findAllByRobot(String robot_id) {
+        return robotDataRepository.getByRobot(robot_id);
     }
 
 }

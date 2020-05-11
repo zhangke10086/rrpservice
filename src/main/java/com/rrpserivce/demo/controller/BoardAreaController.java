@@ -18,10 +18,26 @@ public class BoardAreaController {
 
     @GetMapping(value = "/boardArea/getBoardArea")
     @ApiOperation("获取全部叠合板面积列表")
-    public CommonResult getBoardArea(@RequestParam String date_begin, String date_end) {
+    public CommonResult getBoardArea(@RequestParam String date_begin, String date_end,String robot_id) {
         CommonResult result = new CommonResult();
         try {
-            result.setData(boardAreaService.getArea(date_begin, date_end));
+            result.setData(boardAreaService.getArea(date_begin, date_end,robot_id));
+            return result;
+        } catch (Exception e) {
+            e.printStackTrace();
+            result.setState(500);
+            result.setMsg("获取失败");
+            return result;
+        }
+    }
+
+    @GetMapping(value = "/boardArea/getBoardAreaByRobot")
+    @ApiOperation("根据机器人获取全部列表")
+
+    public CommonResult getBoardAreaByRobot(String robot_id) {
+        CommonResult result = new CommonResult();
+        try {
+            result.setData(boardAreaService.findAllByRobot(robot_id));
             return result;
         } catch (Exception e) {
             e.printStackTrace();
