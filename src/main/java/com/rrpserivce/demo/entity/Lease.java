@@ -21,6 +21,8 @@ public class Lease {
     private String costMonth;
     @Column(name = "start_time")
     private Date startTime;
+    @Column(name = "end_time")
+    private Date endTime;
     @Column(name = "payment_situation")
     private String paymentSituation;
     @Column(name = "connector")

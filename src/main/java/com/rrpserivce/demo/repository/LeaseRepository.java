@@ -1,5 +1,8 @@
 package com.rrpserivce.demo.repository;
 import com.rrpserivce.demo.entity.Lease;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
@@ -18,5 +21,5 @@ public interface LeaseRepository extends JpaRepository<Lease, Integer> {
     @Modifying
     @Query(value = "update  lease set remind = '0' where robot_id =?1",nativeQuery = true)
     public void cancleRemind(String id);
-
+    public List<Lease> findAll(Specification<Lease> spec);
 }

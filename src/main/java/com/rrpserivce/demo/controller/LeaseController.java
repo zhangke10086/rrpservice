@@ -7,6 +7,8 @@ import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.Map;
+
 
 @RestController
 @CrossOrigin
@@ -14,6 +16,24 @@ import org.springframework.web.bind.annotation.*;
 public class LeaseController {
     @Autowired
     private LeaseService leaseService;
+
+
+
+    @PostMapping(value = "/lease/QueryLease")
+    @ApiOperation(value = "动态查询租赁")
+    public CommonResult QueryLease(@RequestBody Map<String, Object> jsonData){
+        CommonResult result = new CommonResult();
+        try {
+            result.setData(leaseService.query(jsonData));
+            return result;
+        } catch (Exception e){
+            e.printStackTrace();
+            result.setState(500);
+            result.setMsg("获取失败");
+            return result;
+        }
+    }
+
     @PostMapping(value = "/lease/addLease")
     @ApiOperation(value = "增加租赁")
     public CommonResult add(@RequestBody Lease lease){
