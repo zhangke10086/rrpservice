@@ -144,9 +144,9 @@ public class LeaseController {
             return result;
         }
     }
-    @PostMapping(value = "/lease/cancleRemind")
+    @GetMapping(value = "/lease/cancleRemind")
     @ApiOperation(value = "取消提醒")
-    public CommonResult cancleRemind(@RequestBody String id){
+    public CommonResult cancleRemind(int id){
         CommonResult result = new CommonResult();
         try {
             leaseService.cancleRemind(id);
@@ -158,7 +158,35 @@ public class LeaseController {
             return result;
         }
     }
+    @GetMapping(value = "/lease/setRemind")
+    @ApiOperation(value = "设置提醒")
+    public CommonResult setRemind(int id){
+        CommonResult result = new CommonResult();
+        try {
+            leaseService.setRemind(id);
+            return result;
+        } catch (Exception e){
+            e.printStackTrace();
+            result.setState(500);
+            result.setMsg("获取失败");
+            return result;
+        }
+    }
 
+    @GetMapping(value = "/lease/findRemind")
+    @ApiOperation(value = "查询是否被提醒")
+    public CommonResult findRemind(int id){
+        CommonResult result = new CommonResult();
+        try {
+            result.setData(leaseService.findRemind(id));
+            return result;
+        } catch (Exception e){
+            e.printStackTrace();
+            result.setState(500);
+            result.setMsg("获取失败");
+            return result;
+        }
+    }
     @PostMapping(value = "/lease/start")
     @ApiOperation(value = "启用")
     public CommonResult start(@RequestBody Lease lease){

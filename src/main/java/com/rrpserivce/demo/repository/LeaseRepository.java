@@ -15,11 +15,14 @@ public interface LeaseRepository extends JpaRepository<Lease, Integer> {
     public List<Lease> findAllByRobot_Id(int id);
     public List<Lease> findAllByCompanyId_Id(int id);
     @Modifying
-    @Query(value = "update  lease set remind = '1' where robot_id=?1",nativeQuery = true)
-    public void setRemind(String id);
+    @Query(value = "update  lease set remind = '1' where id=?1",nativeQuery = true)
+    public void setRemind(int id);
 
     @Modifying
-    @Query(value = "update  lease set remind = '0' where robot_id =?1",nativeQuery = true)
-    public void cancleRemind(String id);
+    @Query(value = "update  lease set remind = '0' where id =?1",nativeQuery = true)
+    public void cancleRemind(int id);
     public List<Lease> findAll(Specification<Lease> spec);
+
+    @Query(value = "select * from  lease where company_id =?1 and remind = '1'",nativeQuery = true)
+    public List<Lease> findRemind(int id);
 }

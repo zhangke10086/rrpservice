@@ -3,6 +3,7 @@ package com.rrpserivce.demo.service;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.rrpserivce.demo.entity.Lease;
+import com.rrpserivce.demo.entity.Pay;
 import com.rrpserivce.demo.entity.Robot;
 import com.rrpserivce.demo.repository.LeaseRepository;
 import com.rrpserivce.demo.repository.RemindRepository;
@@ -26,16 +27,15 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.*;
 import java.util.stream.Collectors;
-
+@Transactional
 @Service
 public class LeaseService {
     @Autowired
     private LeaseRepository leaseRepository;
     @Autowired
-    private RemindRepository remindRepository;
-    @Autowired
     private RobotRepository robotRepository;
-
+    @Autowired
+    private PayService payService;
 
 
     public List<Lease> query(Map<String, Object> jsonData) {
@@ -73,16 +73,33 @@ public class LeaseService {
         return leaseRepository.findAllByCompanyId_Id(id);
     }
 
-    public void setRemind(Map<String,Object> json){
-        String id = null == json.get("robotid")? null: json.get("robotid").toString();
+    public void setRemind(int id){
         leaseRepository.setRemind(id);
     }
-    @Transactional
-    public void cancleRemind(String id){
+    public void cancleRemind(int id){
         leaseRepository.cancleRemind(id);
-        remindRepository.deleteByRobotid(id);
     }
-
+    public Map<String,Object> findRemind(int companyid) throws ParseException {
+        List<Lease> leases = leaseRepository.findRemind(companyid);
+        Map map =new HashMap();
+        if (leases.size()>0){
+            for (Lease lease: leases){
+                //0缴费 1欠费
+                if (lease.getPaymentSituation()=='1'){
+                    map.put("msg",lease.getRobot().getName()+"已欠费，请及时缴费！");
+                } else {
+                    Pay pay = payService.findByLeaseId(lease.getId());
+                    SimpleDateFormat sdf=new SimpleDateFormat("yyyy-mm-dd");
+                    String date2 = pay.getPaymentDeadline();
+                    long daysBetween = (sdf.parse(date2).getTime()-new Date().getTime())/(60*60*24*1000);
+                    map.put("msg",lease.getRobot().getName()+"还有"+daysBetween+"天到期，请及时缴费！");
+                }
+            }
+            return map;
+        } else {
+            return null;
+        }
+    }
     @Transactional
     public void start(Lease lease){
         Robot robot = lease.getRobot();

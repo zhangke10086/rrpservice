@@ -24,7 +24,7 @@ public class Lease {
     @Column(name = "end_time")
     private Date endTime;
     @Column(name = "payment_situation")
-    private String paymentSituation;
+    private Character paymentSituation;
     @Column(name = "connector")
     private String connector;
     @Column(name = "workshop_id")

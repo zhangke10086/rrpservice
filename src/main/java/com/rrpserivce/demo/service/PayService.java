@@ -21,4 +21,8 @@ public class PayService {
     public List<Pay> findAll(){return payRepository.findAll();}
     //按id查找
     public Pay findById(int id){return payRepository.findById(id).get();}
+    public Pay findByLeaseId(int id){
+        return payRepository.findByLeaseId(id);
+    }
+
 }
