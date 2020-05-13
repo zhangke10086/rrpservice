@@ -7,7 +7,11 @@ import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.OutputStream;
 import java.util.Map;
 
 
@@ -229,6 +233,21 @@ public class LeaseController {
             e.printStackTrace();
             result.setState(500);
             result.setMsg("获取失败");
+            return result;
+        }
+    }
+
+    @PostMapping(value = "/lease/upload")
+    @ApiOperation(value = "文件上传并返回url")
+    public CommonResult upload(@RequestBody MultipartFile file){
+        CommonResult result = new CommonResult();
+        try {
+            result.setData(leaseService.upload(file));
+            return result;
+        } catch (Exception e){
+            e.printStackTrace();
+            result.setState(500);
+            result.setMsg("上传失败");
             return result;
         }
     }

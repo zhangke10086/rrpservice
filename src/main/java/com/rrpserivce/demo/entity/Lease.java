@@ -41,4 +41,5 @@ public class Lease {
     private Robot robot;
     private Character remind;
     private String state;
+    private String uploadurl;
 }

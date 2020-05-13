@@ -10,12 +10,17 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
+import org.springframework.web.multipart.MultipartFile;
 
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Predicate;
 import javax.persistence.criteria.Root;
 import javax.transaction.Transactional;
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.OutputStream;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.*;
@@ -148,5 +153,24 @@ public class LeaseService {
     //启用,停用 审核通过
     public void ChangeState(String state,int id){
         leaseRepository.changeState(state,id);
+    }
+
+    //上传合同 并返回url
+    public String upload(MultipartFile file) throws IOException {
+        //获取文件字节数组
+        byte [] bytes = file.getBytes();
+        String fileName =file.getOriginalFilename();
+        //文件存储路径(/fileupload/ 这样会在根目录下创建问价夹)
+        File pfile = new File("/fileupload/");
+        if(!pfile.exists()){
+            //不存在时,创建文件夹
+            pfile.mkdirs();
+        }
+        //创建文件
+        File file1 = new File(pfile, fileName);
+        //写入指定文件夹
+        OutputStream out = new FileOutputStream(file1);
+        out.write(bytes);
+        return file1.getAbsolutePath();
     }
 }
