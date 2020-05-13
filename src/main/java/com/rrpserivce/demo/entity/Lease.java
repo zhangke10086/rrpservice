@@ -40,4 +40,5 @@ public class Lease {
     @JoinColumn(name = "robot_id")
     private Robot robot;
     private Character remind;
+    private String state;
 }

@@ -25,4 +25,12 @@ public interface LeaseRepository extends JpaRepository<Lease, Integer> {
 
     @Query(value = "select * from  lease where company_id =?1 and remind = '1'",nativeQuery = true)
     public List<Lease> findRemind(int id);
+
+    @Modifying
+    @Query(value = "update  lease set payment_situation = ?1 where id =?2",nativeQuery = true)
+    public void changePaymentSituation(Character c,int id);
+
+    @Modifying
+    @Query(value = "update  lease set state = ?1 where id = ?2",nativeQuery = true)
+    public void changeState(String state,int id);
 }

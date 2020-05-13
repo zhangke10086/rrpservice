@@ -38,6 +38,12 @@ public class LeaseService {
             @Override
             public Predicate toPredicate(Root<Lease> root, CriteriaQuery<?> criteriaQuery, CriteriaBuilder criteriaBuilder) {
                 List<Predicate> predicates = new ArrayList<>();
+                if (!StringUtils.isEmpty(jsonData.get("province"))) {
+                    predicates.add(criteriaBuilder.equal(root.get("companyId").get("province"), jsonData.get("province").toString()));
+                }
+                if (!StringUtils.isEmpty(jsonData.get("city"))) {
+                    predicates.add(criteriaBuilder.equal(root.get("companyId").get("city"), jsonData.get("city").toString()));
+                }
                 if (!StringUtils.isEmpty(jsonData.get("robotid"))) {
                     predicates.add(criteriaBuilder.equal(root.get("robot").get("id"), jsonData.get("robotid").toString()));
                 }
@@ -73,6 +79,8 @@ public class LeaseService {
     public void cancleRemind(int id){
         leaseRepository.cancleRemind(id);
     }
+
+    //登陆时查询是否被提醒
     public Map<String,Object> findRemind(int companyid) throws ParseException {
         List<Lease> leases = leaseRepository.findRemind(companyid);
         Map map =new HashMap();
@@ -95,20 +103,32 @@ public class LeaseService {
         }
     }
     public void start(Lease lease){
-        Robot robot = lease.getRobot();
-        robot.setUse_situation("启用");
-        robotRepository.save(robot);
-        lease.setStartTime(new Date());
-        leaseRepository.save(lease);
+        Approval approval =new Approval();
+        approval.setRobot(lease.getRobot());
+        approval.setLease(lease);
+        approval.setState('0');
+        approval.setRequest("启用");
+        approvalService.add(approval);
+//        Robot robot = lease.getRobot();
+//        robot.setUse_situation("启用");
+//        robotRepository.save(robot);
+//        leaseRepository.save(lease);
     }
 
     public void stop(Lease lease){
-        Robot robot = lease.getRobot();
-        robot.setUse_situation("未启用");
-        robotRepository.save(robot);
-        lease.setStartTime(new Date());
-        leaseRepository.save(lease);
+        Approval approval =new Approval();
+        approval.setRobot(lease.getRobot());
+        approval.setLease(lease);
+        approval.setState('0');
+        approval.setRequest("停用");
+        approvalService.add(approval);
+//        Robot robot = lease.getRobot();
+//        robot.setUse_situation("未启用");
+//        robotRepository.save(robot);
+//        lease.setStartTime(new Date());
+//        leaseRepository.save(lease);
     }
+    //续费
     public void pay(Pay pay) throws ParseException {
         SimpleDateFormat sdf =new SimpleDateFormat("yyyy-MM-dd");
         pay.setPaymentDeadline(sdf.format(sdf.parse(pay.getPaymentDeadline())));
@@ -117,7 +137,16 @@ public class LeaseService {
         approval.setRobot(pay.getRobot());
         approval.setState('0');
         approval.setRequest("续费审核");
+        leaseRepository.changePaymentSituation('2',pay.getLease().getId());
         payService.add(pay);
         approvalService.add(approval);
+    }
+    //缴费审核通过
+    public void ChangePaymentSituation(int id){
+        leaseRepository.changePaymentSituation('0',id);
+    }
+    //启用,停用 审核通过
+    public void ChangeState(String state,int id){
+        leaseRepository.changeState(state,id);
     }
 }
