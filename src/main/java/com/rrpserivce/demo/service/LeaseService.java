@@ -1,21 +1,14 @@
 package com.rrpserivce.demo.service;
 
-import com.fasterxml.jackson.core.type.TypeReference;
-import com.fasterxml.jackson.databind.ObjectMapper;
+import com.rrpserivce.demo.entity.Approval;
 import com.rrpserivce.demo.entity.Lease;
 import com.rrpserivce.demo.entity.Pay;
 import com.rrpserivce.demo.entity.Robot;
 import com.rrpserivce.demo.repository.LeaseRepository;
-import com.rrpserivce.demo.repository.RemindRepository;
 import com.rrpserivce.demo.repository.RobotRepository;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Pageable;
-import org.springframework.data.domain.Sort;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
-import org.springframework.util.ObjectUtils;
 import org.springframework.util.StringUtils;
 
 import javax.persistence.criteria.CriteriaBuilder;
@@ -26,7 +19,7 @@ import javax.transaction.Transactional;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.*;
-import java.util.stream.Collectors;
+
 @Transactional
 @Service
 public class LeaseService {
@@ -36,7 +29,8 @@ public class LeaseService {
     private RobotRepository robotRepository;
     @Autowired
     private PayService payService;
-
+    @Autowired
+    private ApprovalService approvalService;
 
     public List<Lease> query(Map<String, Object> jsonData) {
 
@@ -100,7 +94,6 @@ public class LeaseService {
             return null;
         }
     }
-    @Transactional
     public void start(Lease lease){
         Robot robot = lease.getRobot();
         robot.setUse_situation("启用");
@@ -109,12 +102,22 @@ public class LeaseService {
         leaseRepository.save(lease);
     }
 
-    @Transactional
     public void stop(Lease lease){
         Robot robot = lease.getRobot();
         robot.setUse_situation("未启用");
         robotRepository.save(robot);
         lease.setStartTime(new Date());
         leaseRepository.save(lease);
+    }
+    public void pay(Pay pay) throws ParseException {
+        SimpleDateFormat sdf =new SimpleDateFormat("yyyy-MM-dd");
+        pay.setPaymentDeadline(sdf.format(sdf.parse(pay.getPaymentDeadline())));
+        Approval approval =new Approval();
+        approval.setLease(pay.getLease());
+        approval.setRobot(pay.getRobot());
+        approval.setState('0');
+        approval.setRequest("续费审核");
+        payService.add(pay);
+        approvalService.add(approval);
     }
 }

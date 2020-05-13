@@ -1,6 +1,7 @@
 package com.rrpserivce.demo.controller;
 import com.common.resformat.CommonResult;
 import com.rrpserivce.demo.entity.Lease;
+import com.rrpserivce.demo.entity.Pay;
 import com.rrpserivce.demo.service.LeaseService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -208,6 +209,21 @@ public class LeaseController {
         CommonResult result = new CommonResult();
         try {
             leaseService.stop(lease);
+            return result;
+        } catch (Exception e){
+            e.printStackTrace();
+            result.setState(500);
+            result.setMsg("获取失败");
+            return result;
+        }
+    }
+
+    @PostMapping(value = "/lease/pay")
+    @ApiOperation(value = "缴费")
+    public CommonResult pay(@RequestBody Pay pay){
+        CommonResult result = new CommonResult();
+        try {
+            leaseService.pay(pay);
             return result;
         } catch (Exception e){
             e.printStackTrace();
