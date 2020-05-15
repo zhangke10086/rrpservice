@@ -1,11 +1,20 @@
 package com.rrpserivce.demo.service;
 
 import com.rrpserivce.demo.entity.BenchData;
+import com.rrpserivce.demo.entity.Lease;
 import com.rrpserivce.demo.repository.BenchDataRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
+import org.springframework.util.StringUtils;
 
+import javax.persistence.criteria.CriteriaBuilder;
+import javax.persistence.criteria.CriteriaQuery;
+import javax.persistence.criteria.Predicate;
+import javax.persistence.criteria.Root;
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 @Service
 public class BenchDataService {
@@ -42,4 +51,33 @@ public class BenchDataService {
         benchDataRepository.deleteByBench(bench_id);
     }
 
+
+
+
+    //动态查询
+    public List<BenchData> query(Map<String, Object> jsonData) {
+
+        Specification<BenchData> mpsQuery = new Specification<BenchData>() {
+            @Override
+            public Predicate toPredicate(Root<BenchData> root, CriteriaQuery<?> criteriaQuery, CriteriaBuilder criteriaBuilder) {
+                List<Predicate> predicates = new ArrayList<>();
+                if (!StringUtils.isEmpty(jsonData.get("province"))) {
+                                                //equal为相等  root.get("") 即为 bench.get()                          jsonData.get()即为前端传参 jsondata
+                    predicates.add(criteriaBuilder.equal(root.get("bench").get("robot").get("belongingCompany").get("province"), jsonData.get("province").toString()));
+                }
+                if (!StringUtils.isEmpty(jsonData.get("city"))) {
+                    predicates.add(criteriaBuilder.equal(root.get("bench").get("robot").get("belongingCompany").get("city"), jsonData.get("city").toString()));
+                }
+                if (!StringUtils.isEmpty(jsonData.get("robotid"))) {
+                    predicates.add(criteriaBuilder.equal(root.get("bench").get("robot").get("id"), jsonData.get("robotid").toString()));
+                }
+                if (!StringUtils.isEmpty(jsonData.get("companyid"))) {
+                    predicates.add(criteriaBuilder.equal(root.get("bench").get("robot").get("belongingCompany").get("id"), jsonData.get("companyid").toString()));
+                }
+                return criteriaBuilder.and(predicates.toArray(new Predicate[predicates.size()]));
+            }
+        };
+        List<BenchData> mpsPage = benchDataRepository.findAll(mpsQuery);
+        return mpsPage;
+    }
 }
