@@ -197,7 +197,7 @@ public class LeaseController {
     public CommonResult start(@RequestBody Lease lease){
         CommonResult result = new CommonResult();
         try {
-            leaseService.start(lease);
+            result.setData(leaseService.start(lease));
             return result;
         } catch (Exception e){
             e.printStackTrace();
@@ -212,7 +212,7 @@ public class LeaseController {
     public CommonResult stop(@RequestBody Lease lease){
         CommonResult result = new CommonResult();
         try {
-            leaseService.stop(lease);
+            result.setData(leaseService.stop(lease));
             return result;
         } catch (Exception e){
             e.printStackTrace();

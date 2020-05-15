@@ -16,6 +16,7 @@ import javax.persistence.criteria.Predicate;
 import javax.persistence.criteria.Root;
 import javax.transaction.Transactional;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 @Transactional
@@ -65,6 +66,7 @@ public class ApprovalService {
     public void changeState(int id){
         approvalRepository.changeState(id);
     }
+    //确认
     public void confirm(Map<String, Object> jsonData){
         String request = jsonData.get("request").toString();
         int lease_id = Integer.parseInt(jsonData.get("leaseid").toString());
@@ -85,10 +87,22 @@ public class ApprovalService {
                 break;
         }
     }
+    //驳回
     public void reject(Map<String, Object> jsonData){
-        String request = jsonData.get("request").toString();
-        int lease_id = Integer.parseInt(jsonData.get("leaseid").toString());
         int approval_id = Integer.parseInt(jsonData.get("id").toString());
         this.changeState(approval_id);
+    }
+    //查询合同是否正在审核中
+    public Map isApproval(int lease_id){
+        Map map =new HashMap();
+        List<Approval> approvals = approvalRepository.isApproval(lease_id);
+        if (approvals.size()!=0){
+            String request = approvals.get(0).getRequest();
+            String id = approvals.get(0).getRobot().getId();
+            map.put("msg",id+"正在"+request+" 请求中，请耐心等待客服经理审批！");
+            return map;
+        } else {
+            return null;
+        }
     }
 }

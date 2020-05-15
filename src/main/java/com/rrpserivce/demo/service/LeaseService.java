@@ -4,6 +4,7 @@ import com.rrpserivce.demo.entity.Approval;
 import com.rrpserivce.demo.entity.Lease;
 import com.rrpserivce.demo.entity.Pay;
 import com.rrpserivce.demo.entity.Robot;
+import com.rrpserivce.demo.repository.ApprovalRepository;
 import com.rrpserivce.demo.repository.LeaseRepository;
 import com.rrpserivce.demo.repository.RobotRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -32,6 +33,8 @@ public class LeaseService {
     private LeaseRepository leaseRepository;
     @Autowired
     private RobotRepository robotRepository;
+    @Autowired
+    private ApprovalRepository approvalRepository;
     @Autowired
     private PayService payService;
     @Autowired
@@ -96,7 +99,7 @@ public class LeaseService {
                     map.put("msg",lease.getRobot().getName()+"已欠费，请及时缴费！");
                 } else {
                     Pay pay = payService.findByLeaseId(lease.getId());
-                    SimpleDateFormat sdf=new SimpleDateFormat("yyyy-mm-dd");
+                    SimpleDateFormat sdf=new SimpleDateFormat("yyyy-MM-dd");
                     String date2 = pay.getPaymentDeadline();
                     long daysBetween = (sdf.parse(date2).getTime()-new Date().getTime())/(60*60*24*1000);
                     map.put("msg",lease.getRobot().getName()+"还有"+daysBetween+"天到期，请及时缴费！");
@@ -107,31 +110,44 @@ public class LeaseService {
             return null;
         }
     }
-    public void start(Lease lease){
-        Approval approval =new Approval();
-        approval.setRobot(lease.getRobot());
-        approval.setLease(lease);
-        approval.setState('0');
-        approval.setRequest("启用");
-        approvalService.add(approval);
-//        Robot robot = lease.getRobot();
-//        robot.setUse_situation("启用");
-//        robotRepository.save(robot);
-//        leaseRepository.save(lease);
+    public Map start(Lease lease){
+        Map map =new HashMap();
+        List<Approval> approvals = approvalRepository.isApproval(lease.getId());
+        if (approvals.size()!=0){
+            String request = approvals.get(0).getRequest();
+            String id = approvals.get(0).getRobot().getId();
+            map.put("msg",id+"正在"+request+" 请求中，请耐心等待客服经理审批！");
+            return map;
+        } else {
+            Approval approval =new Approval();
+            approval.setRobot(lease.getRobot());
+            approval.setLease(lease);
+            approval.setState('0');
+            approval.setRequest("启用");
+            approvalService.add(approval);
+            map.put("msg","已发起启用审核，等待客服经理审批！");
+            return map;
+        }
     }
 
-    public void stop(Lease lease){
-        Approval approval =new Approval();
-        approval.setRobot(lease.getRobot());
-        approval.setLease(lease);
-        approval.setState('0');
-        approval.setRequest("停用");
-        approvalService.add(approval);
-//        Robot robot = lease.getRobot();
-//        robot.setUse_situation("未启用");
-//        robotRepository.save(robot);
-//        lease.setStartTime(new Date());
-//        leaseRepository.save(lease);
+    public Map stop(Lease lease){
+        Map map =new HashMap();
+        List<Approval> approvals = approvalRepository.isApproval(lease.getId());
+        if (approvals.size()!=0){
+            String request = approvals.get(0).getRequest();
+            String id = approvals.get(0).getRobot().getId();
+            map.put("msg",id+"正在"+request+" 请求中，请耐心等待客服经理审批！");
+            return map;
+        } else {
+            Approval approval =new Approval();
+            approval.setRobot(lease.getRobot());
+            approval.setLease(lease);
+            approval.setState('0');
+            approval.setRequest("停用");
+            approvalService.add(approval);
+            map.put("msg","已发起停用审核，等待客服经理审批！");
+            return map;
+        }
     }
     //续费
     public void pay(Pay pay) throws ParseException {

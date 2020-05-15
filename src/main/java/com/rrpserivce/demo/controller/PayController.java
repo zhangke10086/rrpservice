@@ -110,4 +110,19 @@ public class PayController {
             return result;
         }
     }
+
+    @GetMapping(value = "/pay/findByLeaseid")
+    @ApiOperation(value = "查找一个缴费")
+    public CommonResult findByLeaseid(int leaseid){
+        CommonResult result = new CommonResult();
+        try {
+            result.setData(payService.findByLeaseid(leaseid));
+            return result;
+        } catch (Exception e){
+            e.printStackTrace();
+            result.setState(500);
+            result.setMsg("获取失败");
+            return result;
+        }
+    }
 }

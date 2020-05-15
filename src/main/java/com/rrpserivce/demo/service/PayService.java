@@ -61,4 +61,7 @@ public class PayService {
         List<Pay> mpsPage = payRepository.findAll(mpsQuery);
         return mpsPage;
     }
+    public Pay findByLeaseid(int id){
+        return payRepository.findByLeaseId(id);
+    }
 }

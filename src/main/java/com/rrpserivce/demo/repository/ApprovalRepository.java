@@ -16,4 +16,8 @@ public interface ApprovalRepository extends JpaRepository<Approval, Integer> {
     @Modifying
     @Query(value = "update  approval set state = '1' where id=?1",nativeQuery = true)
     public void changeState(int id);
+
+
+    @Query(value = "select * from approval  where lease_id=?1 and state='0'",nativeQuery = true)
+    public List<Approval> isApproval(int id);
 }
