@@ -40,7 +40,7 @@ public class BenchController {
     @GetMapping(value = "/bench/getBenchByRobot")
     @ApiOperation("根据机器人获取全部模台列表")
 
-    public CommonResult getBenchByRobot(String robot_id) {
+    public CommonResult getBenchByRobot(@RequestParam String robot_id) {
         CommonResult result = new CommonResult();
         try {
             result.setData(benchService.findAllByRobot(robot_id));

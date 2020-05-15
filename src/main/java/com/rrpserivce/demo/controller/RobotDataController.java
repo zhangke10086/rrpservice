@@ -34,7 +34,7 @@ public class RobotDataController {
     @GetMapping(value = "/robotData/getRobotDataByRobot")
     @ApiOperation("根据机器人获取全部列表")
 
-    public CommonResult getRobotDataByRobot(String robot_id) {
+    public CommonResult getRobotDataByRobot(@RequestParam String robot_id) {
         CommonResult result = new CommonResult();
         try {
             result.setData(robotDataService.findAllByRobot(robot_id));
