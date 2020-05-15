@@ -1,5 +1,6 @@
 package com.rrpserivce.demo.service;
 
+import com.rrpserivce.demo.entity.RobotData;
 import com.rrpserivce.demo.entity.Warning;
 import com.rrpserivce.demo.repository.WarningRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -35,6 +36,10 @@ public class WarningService {
     //根据id删除
     public void deleteById(int id) {
         warningRepository.deleteById(id);
+    }
+
+    public List<Warning> findAllByRobot(String robot_id) {
+        return warningRepository.getByRobot(robot_id);
     }
 
 }

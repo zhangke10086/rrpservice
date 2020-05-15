@@ -31,6 +31,22 @@ public class WarningController {
         }
     }
 
+    @GetMapping(value = "/warning/getWarningByRobot")
+    @ApiOperation("根据机器人获取全部列表")
+
+    public CommonResult getWarningByRobot(@RequestParam String robot_id) {
+        CommonResult result = new CommonResult();
+        try {
+            result.setData(warningService.findAllByRobot(robot_id));
+            return result;
+        } catch (Exception e) {
+            e.printStackTrace();
+            result.setState(500);
+            result.setMsg("获取失败");
+            return result;
+        }
+    }
+
     @GetMapping(value = "/warning/getWarningById")
     @ApiOperation("根据id查找警告")
     public CommonResult getWarningById(@RequestBody int id) {
