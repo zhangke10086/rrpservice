@@ -7,6 +7,8 @@ import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.Map;
+
 
 @RestController
 @CrossOrigin
@@ -100,6 +102,37 @@ public class RobotController {
         CommonResult result = new CommonResult();
         try {
             result.setData(robotService.findAllByBelongingCompany(id));
+            return result;
+        } catch (Exception e){
+            e.printStackTrace();
+            result.setState(500);
+            result.setMsg("获取失败");
+            return result;
+        }
+    }
+
+    @GetMapping(value = "/robot/findAllByCompanyid")
+    @ApiOperation(value = "按企业id查找被该企业使用的机器人")
+    public CommonResult findAllByCompanyid(int id){
+        CommonResult result = new CommonResult();
+        try {
+            result.setData(robotService.findByCompanyId(id));
+            return result;
+        } catch (Exception e){
+            e.printStackTrace();
+            result.setState(500);
+            result.setMsg("获取失败");
+            return result;
+        }
+    }
+
+    //出租企业查找 租用企业下的全部机器人
+    @PostMapping(value = "/robot/findByComapny")
+    @ApiOperation(value = "出租企业查找 租用企业下的全部机器人")
+    public CommonResult findByComapny(@RequestBody  Map<String,Object> jsondata){
+        CommonResult result = new CommonResult();
+        try {
+            result.setData(robotService.findByComapny(jsondata));
             return result;
         } catch (Exception e){
             e.printStackTrace();

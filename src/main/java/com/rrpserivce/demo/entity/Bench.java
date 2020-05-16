@@ -20,5 +20,8 @@ public class Bench {
     private String workshop;
     @ManyToOne()
     private Robot robot;
+    @OneToOne
+    @JoinColumn(name = "company_id")
+    private Company company;
 }
 
