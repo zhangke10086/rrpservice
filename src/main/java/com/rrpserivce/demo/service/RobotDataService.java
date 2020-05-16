@@ -58,10 +58,10 @@ public class RobotDataService {
                 List<Predicate> predicates = new ArrayList<>();
                 if (!StringUtils.isEmpty(jsonData.get("province"))) {
                     //equal为相等  root.get("") 即为 bench.get()                          jsonData.get()即为前端传参 jsondata
-                    predicates.add(criteriaBuilder.equal(root.get("robot").get("belongingCompany").get("province"), jsonData.get("province").toString()));
+                    predicates.add(criteriaBuilder.equal(root.get("company").get("province"), jsonData.get("province").toString()));
                 }
                 if (!StringUtils.isEmpty(jsonData.get("city"))) {
-                    predicates.add(criteriaBuilder.equal(root.get("robot").get("belongingCompany").get("city"), jsonData.get("city").toString()));
+                    predicates.add(criteriaBuilder.equal(root.get("company").get("city"), jsonData.get("city").toString()));
                 }
                 if (!StringUtils.isEmpty(jsonData.get("robotid"))) {
                     predicates.add(criteriaBuilder.equal(root.get("robot").get("id"), jsonData.get("robotid").toString()));
