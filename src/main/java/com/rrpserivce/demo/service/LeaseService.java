@@ -55,8 +55,23 @@ public class LeaseService {
                 if (!StringUtils.isEmpty(jsonData.get("robotid"))) {
                     predicates.add(criteriaBuilder.equal(root.get("robot").get("id"), jsonData.get("robotid").toString()));
                 }
-                if (!StringUtils.isEmpty(jsonData.get("companyid"))) {
-                    predicates.add(criteriaBuilder.equal(root.get("companyId").get("id"), jsonData.get("companyid").toString()));
+                if (!StringUtils.isEmpty(jsonData.get("companytypeid"))) {
+                    //出租和制造企业
+                    if (Integer.parseInt(jsonData.get("companytypeid").toString()) == 1 ||Integer.parseInt(jsonData.get("companytypeid").toString()) == 2){
+                        //非骊久只能看自己所拥有的机器人
+                        if(!jsonData.get("owncompanyid").toString().equals("1")){
+                            predicates.add(criteriaBuilder.equal(root.get("robot").get("belongingCompany").get("id"), jsonData.get("owncompanyid").toString()));
+                        }
+                        if (!StringUtils.isEmpty(jsonData.get("companyid"))) {
+                            predicates.add(criteriaBuilder.equal(root.get("companyId").get("id"),jsonData.get("companyid").toString()));
+                        }
+                    }
+                    //租用企业 只能看自己数据
+                    if (Integer.parseInt(jsonData.get("companytypeid").toString()) == 4){
+                        if (!StringUtils.isEmpty(jsonData.get("companyid"))) {
+                            predicates.add(criteriaBuilder.equal(root.get("companyId").get("id"),jsonData.get("owncompanyid").toString()));
+                        }
+                    }
                 }
                 return criteriaBuilder.and(predicates.toArray(new Predicate[predicates.size()]));
             }

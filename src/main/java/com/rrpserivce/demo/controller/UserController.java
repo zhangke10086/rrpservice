@@ -8,27 +8,30 @@ import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.Map;
+
+// 记得清理死代码
 @RestController
 @CrossOrigin()
 @Api(value = "用户")
 public class UserController {
     @Autowired
     private UserService userService;
-    @GetMapping(value = "/user/getUsers")
-    @ApiOperation("获取全部用户列表")
-    public CommonResult getUser() {
-        CommonResult result = new CommonResult();
-        try {
-            result.setData(userService.findAll());
-            System.out.println(result.toString());
-            return result;
-        } catch (Exception e){
-            e.printStackTrace();
-            result.setState(500);
-            result.setMsg(userService.findAll().toString());
-            return result;
-        }
-    }
+//    @GetMapping(value = "/user/getUsers")
+//    @ApiOperation("获取全部用户列表")
+//    public CommonResult getUser() {
+//        CommonResult result = new CommonResult();
+//        try {
+//            result.setData(userService.findAll());
+//            System.out.println(result.toString());
+//            return result;
+//        } catch (Exception e){
+//            e.printStackTrace();
+//            result.setState(500);
+//            result.setMsg(userService.findAll().toString());
+//            return result;
+//        }
+//    }
 
     @GetMapping(value = "/user/getUserById")
     @ApiOperation("根据id查找用户")
@@ -91,7 +94,7 @@ public class UserController {
     }
 
     @PostMapping(value = "/user/addUser")
-    @ApiOperation(value = "增加企业")
+    @ApiOperation(value = "增加用户")
     public CommonResult add(@RequestBody User user){
         CommonResult result = new CommonResult();
         try {
@@ -105,4 +108,19 @@ public class UserController {
         }
     }
 
+
+    @PostMapping(value = "/user/queryUser")
+    @ApiOperation(value = "动态查询用户")
+    public CommonResult QueryLease(@RequestBody Map<String, Object> jsonData){
+        CommonResult result = new CommonResult();
+        try {
+            result.setData(userService.query(jsonData));
+            return result;
+        } catch (Exception e){
+            e.printStackTrace();
+            result.setState(500);
+            result.setMsg("获取失败");
+            return result;
+        }
+    }
 }

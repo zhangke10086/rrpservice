@@ -38,4 +38,8 @@ public class CompanyService {
         return companyRepository.findAllBy2Keys(key1,key2);
     }
 
+
+    public List<Company> findByRobot(int id){
+        return companyRepository.findByRobot(id);
+    }
 }
