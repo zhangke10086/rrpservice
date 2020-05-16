@@ -62,7 +62,7 @@ public class ApprovalService {
                         }
                     }
                     //租用企业 只能看自己数据
-                    if (Integer.parseInt(jsonData.get("companytypeid").toString()) == 4){
+                    if (Integer.parseInt(jsonData.get("companytypeid").toString()) == 4||Integer.parseInt(jsonData.get("companytypeid").toString()) == 3){
                         if (!StringUtils.isEmpty(jsonData.get("companyid"))) {
                             predicates.add(criteriaBuilder.equal(root.get("lease").get("companyId").get("id"),jsonData.get("owncompanyid").toString()));
                         }
