@@ -1,5 +1,6 @@
 package com.rrpserivce.demo.service;
 
+import com.rrpserivce.demo.entity.BenchCount;
 import com.rrpserivce.demo.entity.ConcreteCount;
 import com.rrpserivce.demo.repository.ConcreteCountRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,8 +14,12 @@ public class ConcreteCountService {
     private ConcreteCountRepository concreteCountRepository;
 
     //查询
-    public List<ConcreteCount> getCount(String begin, String end) {
-        return concreteCountRepository.getCount(begin, end);
+    public List<ConcreteCount> getCount(String begin, String end,String robot_id) {
+        return concreteCountRepository.getCount(begin, end,robot_id);
+    }
+
+    public List<ConcreteCount> findAllByRobot(String robot_id) {
+        return concreteCountRepository.getByRobot(robot_id);
     }
 
     //根据id查询

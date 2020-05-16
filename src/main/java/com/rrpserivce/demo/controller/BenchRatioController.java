@@ -18,10 +18,26 @@ public class BenchRatioController {
 
     @GetMapping(value = "/benchRatio/getBenchRatio")
     @ApiOperation("获取全部模台利用率列表")
-    public CommonResult getBenchRatio(@RequestParam String date_begin, String date_end) {
+    public CommonResult getBenchRatio(@RequestParam String date_begin, String date_end,String robot_id) {
         CommonResult result = new CommonResult();
         try {
-            result.setData(benchRatioService.getRatio(date_begin, date_end));
+            result.setData(benchRatioService.getRatio(date_begin, date_end,robot_id));
+            return result;
+        } catch (Exception e) {
+            e.printStackTrace();
+            result.setState(500);
+            result.setMsg("获取失败");
+            return result;
+        }
+    }
+
+    @GetMapping(value = "/benchRatio/getBenchRatioByRobot")
+    @ApiOperation("根据机器人获取全部列表")
+
+    public CommonResult getBenchRatioByRobot(String robot_id) {
+        CommonResult result = new CommonResult();
+        try {
+            result.setData(benchRatioService.findAllByRobot(robot_id));
             return result;
         } catch (Exception e) {
             e.printStackTrace();

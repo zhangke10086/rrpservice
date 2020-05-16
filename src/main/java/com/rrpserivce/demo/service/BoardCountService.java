@@ -1,5 +1,6 @@
 package com.rrpserivce.demo.service;
 
+import com.rrpserivce.demo.entity.BenchCount;
 import com.rrpserivce.demo.entity.BoardCount;
 import com.rrpserivce.demo.repository.BoardCountRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,8 +14,12 @@ public class BoardCountService {
     private BoardCountRepository boardCountRepository;
 
     //查询
-    public List<BoardCount> getCount(String begin, String end) {
-        return boardCountRepository.getCount(begin, end);
+    public List<BoardCount> getCount(String begin, String end,String robot_id) {
+        return boardCountRepository.getCount(begin, end,robot_id);
+    }
+
+    public List<BoardCount> findAllByRobot(String robot_id) {
+        return boardCountRepository.getByRobot(robot_id);
     }
 
     //根据id查询

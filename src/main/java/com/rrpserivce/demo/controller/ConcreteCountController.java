@@ -18,10 +18,26 @@ public class ConcreteCountController {
 
     @GetMapping(value = "/concreteCount/getConcreteCount")
     @ApiOperation("获取全部混凝土方量列表")
-    public CommonResult getConcreteCount(@RequestParam String date_begin, String date_end) {
+    public CommonResult getConcreteCount(@RequestParam String date_begin, String date_end, String robot_id) {
         CommonResult result = new CommonResult();
         try {
-            result.setData(concreteCountService.getCount(date_begin, date_end));
+            result.setData(concreteCountService.getCount(date_begin, date_end,robot_id));
+            return result;
+        } catch (Exception e) {
+            e.printStackTrace();
+            result.setState(500);
+            result.setMsg("获取失败");
+            return result;
+        }
+    }
+
+    @GetMapping(value = "/concreteCount/getConcreteCountByRobot")
+    @ApiOperation("根据机器人获取全部列表")
+
+    public CommonResult getConcreteCountByRobot(String robot_id) {
+        CommonResult result = new CommonResult();
+        try {
+            result.setData(concreteCountService.findAllByRobot(robot_id));
             return result;
         } catch (Exception e) {
             e.printStackTrace();

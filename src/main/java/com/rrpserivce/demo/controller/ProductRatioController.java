@@ -18,10 +18,26 @@ public class ProductRatioController {
 
     @GetMapping(value = "/productRatio/getProductRatio")
     @ApiOperation("获取全部产品合格率列表")
-    public CommonResult getProductRatio(@RequestParam String date_begin, String date_end) {
+    public CommonResult getProductRatio(@RequestParam String date_begin, String date_end,String robot_id) {
         CommonResult result = new CommonResult();
         try {
-            result.setData(productRatioService.getRatio(date_begin, date_end));
+            result.setData(productRatioService.getRatio(date_begin, date_end,robot_id));
+            return result;
+        } catch (Exception e) {
+            e.printStackTrace();
+            result.setState(500);
+            result.setMsg("获取失败");
+            return result;
+        }
+    }
+
+    @GetMapping(value = "/productRatio/getProductRatioByRobot")
+    @ApiOperation("根据机器人获取全部列表")
+
+    public CommonResult getProductRatioByRobot(String robot_id) {
+        CommonResult result = new CommonResult();
+        try {
+            result.setData(productRatioService.findAllByRobot(robot_id));
             return result;
         } catch (Exception e) {
             e.printStackTrace();

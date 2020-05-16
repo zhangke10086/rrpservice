@@ -18,10 +18,26 @@ public class BenchCountController {
 
     @GetMapping(value = "/benchCount/getBenchCount")
     @ApiOperation("获取全部模台个数列表")
-    public CommonResult getBenchCount(@RequestParam String date_begin, String date_end) {
+    public CommonResult getBenchCount(@RequestParam String date_begin, String date_end,String robot_id) {
         CommonResult result = new CommonResult();
         try {
-            result.setData(benchCountService.getCount(date_begin, date_end));
+            result.setData(benchCountService.getCount(date_begin, date_end,robot_id));
+            return result;
+        } catch (Exception e) {
+            e.printStackTrace();
+            result.setState(500);
+            result.setMsg("获取失败");
+            return result;
+        }
+    }
+
+    @GetMapping(value = "/benchCount/getBenchCountByRobot")
+    @ApiOperation("根据机器人获取全部列表")
+
+    public CommonResult getBenchCountByRobot(String robot_id) {
+        CommonResult result = new CommonResult();
+        try {
+            result.setData(benchCountService.findAllByRobot(robot_id));
             return result;
         } catch (Exception e) {
             e.printStackTrace();

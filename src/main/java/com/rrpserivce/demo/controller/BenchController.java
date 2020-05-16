@@ -16,9 +16,9 @@ import org.springframework.web.bind.annotation.*;
 public class BenchController {
     @Autowired
     private BenchService benchService;
-@Autowired
+    @Autowired
     private BenchDataService benchDataService;
-@Autowired
+    @Autowired
     private ProcessDataService processDataService;
 
     @GetMapping(value = "/bench/getBench")
@@ -36,10 +36,11 @@ public class BenchController {
             return result;
         }
     }
-@GetMapping(value = "/bench/getBenchByRobot")
-    @ApiOperation("获取全部模台列表")
 
-    public CommonResult getBenchByRobot(String robot_id) {
+    @GetMapping(value = "/bench/getBenchByRobot")
+    @ApiOperation("根据机器人获取全部模台列表")
+
+    public CommonResult getBenchByRobot(@RequestParam String robot_id) {
         CommonResult result = new CommonResult();
         try {
             result.setData(benchService.findAllByRobot(robot_id));

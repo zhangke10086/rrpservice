@@ -21,8 +21,10 @@ public class Lease {
     private String costMonth;
     @Column(name = "start_time")
     private Date startTime;
+    @Column(name = "end_time")
+    private Date endTime;
     @Column(name = "payment_situation")
-    private String paymentSituation;
+    private Character paymentSituation;
     @Column(name = "connector")
     private String connector;
     @Column(name = "workshop_id")
@@ -38,4 +40,6 @@ public class Lease {
     @JoinColumn(name = "robot_id")
     private Robot robot;
     private Character remind;
+    private String state;
+    private String uploadurl;
 }

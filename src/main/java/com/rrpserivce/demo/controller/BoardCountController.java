@@ -18,10 +18,26 @@ public class BoardCountController {
 
     @GetMapping(value = "/boardCount/getBoardCount")
     @ApiOperation("获取全部叠合板数量列表")
-    public CommonResult getBoardCount(@RequestParam String date_begin, String date_end) {
+    public CommonResult getBoardCount(@RequestParam String date_begin, String date_end,String robot_id) {
         CommonResult result = new CommonResult();
         try {
-            result.setData(boardCountService.getCount(date_begin, date_end));
+            result.setData(boardCountService.getCount(date_begin, date_end,robot_id));
+            return result;
+        } catch (Exception e) {
+            e.printStackTrace();
+            result.setState(500);
+            result.setMsg("获取失败");
+            return result;
+        }
+    }
+
+    @GetMapping(value = "/boardCount/getBoardCountByRobot")
+    @ApiOperation("根据机器人获取全部列表")
+
+    public CommonResult getBoardCountByRobot(String robot_id) {
+        CommonResult result = new CommonResult();
+        try {
+            result.setData(boardCountService.findAllByRobot(robot_id));
             return result;
         } catch (Exception e) {
             e.printStackTrace();
