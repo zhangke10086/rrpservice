@@ -66,5 +66,8 @@ public class Warning {
     private Boolean machine_signal24;
     @ManyToOne()
     private Robot robot;
+    @OneToOne
+    @JoinColumn(name = "company_id")
+    private Company company;
 }
 

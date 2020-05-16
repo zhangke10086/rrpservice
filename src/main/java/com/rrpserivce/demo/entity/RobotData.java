@@ -91,6 +91,9 @@ public class RobotData {
     private Double enddistance;
     @OneToOne
     private Robot robot;
+    @OneToOne
+    @JoinColumn(name = "company_id")
+    private Company company;
 
 }
 
