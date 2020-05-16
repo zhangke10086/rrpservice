@@ -1,7 +1,6 @@
 package com.rrpserivce.demo.service;
 
 import com.rrpserivce.demo.entity.BenchData;
-import com.rrpserivce.demo.entity.Lease;
 import com.rrpserivce.demo.repository.BenchDataRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.jpa.domain.Specification;

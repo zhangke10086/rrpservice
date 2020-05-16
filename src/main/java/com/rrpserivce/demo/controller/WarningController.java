@@ -8,12 +8,29 @@ import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.Map;
+
 @RestController
 @CrossOrigin()
 @Api(value = "警告")
 public class WarningController {
     @Autowired
     private WarningService warningService;
+
+    @PostMapping(value = "/warning/QueryWarning")
+    @ApiOperation(value = "动态查询模台参数")
+    public CommonResult QueryLease(@RequestBody Map<String, Object> jsonData){
+        CommonResult result = new CommonResult();
+        try {
+            result.setData(warningService.query(jsonData));
+            return result;
+        } catch (Exception e){
+            e.printStackTrace();
+            result.setState(500);
+            result.setMsg("获取失败");
+            return result;
+        }
+    }
 
     @GetMapping(value = "/warning/getWarning")
     @ApiOperation("获取全部警告列表")

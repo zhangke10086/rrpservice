@@ -10,6 +10,8 @@ import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.Map;
+
 @RestController
 @CrossOrigin()
 @Api(value = "模台")
@@ -20,6 +22,21 @@ public class BenchController {
     private BenchDataService benchDataService;
     @Autowired
     private ProcessDataService processDataService;
+
+    @PostMapping(value = "/bench/QueryBench")
+    @ApiOperation(value = "动态查询模台")
+    public CommonResult QueryLease(@RequestBody Map<String, Object> jsonData){
+        CommonResult result = new CommonResult();
+        try {
+            result.setData(benchService.query(jsonData));
+            return result;
+        } catch (Exception e){
+            e.printStackTrace();
+            result.setState(500);
+            result.setMsg("获取失败");
+            return result;
+        }
+    }
 
     @GetMapping(value = "/bench/getBench")
     @ApiOperation("获取全部模台列表")

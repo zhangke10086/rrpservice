@@ -8,12 +8,29 @@ import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.Map;
+
 @RestController
 @CrossOrigin()
-@Api(value = "模台参数")
+@Api(value = "机器人参数")
 public class RobotDataController {
     @Autowired
     private RobotDataService robotDataService;
+
+    @PostMapping(value = "/robotData/QueryRobotData")
+    @ApiOperation(value = "动态查询模台参数")
+    public CommonResult QueryLease(@RequestBody Map<String, Object> jsonData){
+        CommonResult result = new CommonResult();
+        try {
+            result.setData(robotDataService.query(jsonData));
+            return result;
+        } catch (Exception e){
+            e.printStackTrace();
+            result.setState(500);
+            result.setMsg("获取失败");
+            return result;
+        }
+    }
 
     @GetMapping(value = "/robotData/getRobotData")
     @ApiOperation("获取全部模台参数列表")

@@ -1,12 +1,21 @@
 package com.rrpserivce.demo.service;
 
+import com.rrpserivce.demo.entity.Warning;
 import com.rrpserivce.demo.entity.RobotData;
 import com.rrpserivce.demo.entity.Warning;
 import com.rrpserivce.demo.repository.WarningRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
+import org.springframework.util.StringUtils;
 
+import javax.persistence.criteria.CriteriaBuilder;
+import javax.persistence.criteria.CriteriaQuery;
+import javax.persistence.criteria.Predicate;
+import javax.persistence.criteria.Root;
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 @Service
 public class WarningService {
@@ -40,6 +49,33 @@ public class WarningService {
 
     public List<Warning> findAllByRobot(String robot_id) {
         return warningRepository.getByRobot(robot_id);
+    }
+
+    //动态查询
+    public List<Warning> query(Map<String, Object> jsonData) {
+
+        Specification<Warning> mpsQuery = new Specification<Warning>() {
+            @Override
+            public Predicate toPredicate(Root<Warning> root, CriteriaQuery<?> criteriaQuery, CriteriaBuilder criteriaBuilder) {
+                List<Predicate> predicates = new ArrayList<>();
+                if (!StringUtils.isEmpty(jsonData.get("province"))) {
+                    //equal为相等  root.get("") 即为 bench.get()                          jsonData.get()即为前端传参 jsondata
+                    predicates.add(criteriaBuilder.equal(root.get("robot").get("belongingCompany").get("province"), jsonData.get("province").toString()));
+                }
+                if (!StringUtils.isEmpty(jsonData.get("city"))) {
+                    predicates.add(criteriaBuilder.equal(root.get("robot").get("belongingCompany").get("city"), jsonData.get("city").toString()));
+                }
+                if (!StringUtils.isEmpty(jsonData.get("robotid"))) {
+                    predicates.add(criteriaBuilder.equal(root.get("robot").get("id"), jsonData.get("robotid").toString()));
+                }
+                if (!StringUtils.isEmpty(jsonData.get("companyid"))) {
+                    predicates.add(criteriaBuilder.equal(root.get("robot").get("belongingCompany").get("id"), jsonData.get("companyid").toString()));
+                }
+                return criteriaBuilder.and(predicates.toArray(new Predicate[predicates.size()]));
+            }
+        };
+        List<Warning> mpsPage = warningRepository.findAll(mpsQuery);
+        return mpsPage;
     }
 
 }
