@@ -77,6 +77,6 @@ public class PayService {
         return mpsPage;
     }
     public Pay findByLeaseid(int id){
-        return payRepository.findByLeaseId(id);
+        return payRepository.findByLeaseIdAndState(id);
     }
 }

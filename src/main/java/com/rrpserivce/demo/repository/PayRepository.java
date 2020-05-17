@@ -12,7 +12,8 @@ import java.util.List;
 public interface PayRepository extends JpaRepository<Pay, Integer> {
     @Query(value = "select * from  pay where lease_id =?1",nativeQuery = true)
     Pay findByLeaseId(int id);
-
+    @Query(value = "select * from  pay where lease_id =?1 and examine_situation ='待审核'",nativeQuery = true)
+    Pay findByLeaseIdAndState(int id);
     @Modifying
     @Query(value = "update  pay set examine_situation = '通过' where lease_id =?1",nativeQuery = true)
     public void changeExamineSituation(int id);
