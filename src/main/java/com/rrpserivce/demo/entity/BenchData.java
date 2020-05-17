@@ -18,6 +18,9 @@ public class BenchData {
     private Date time;
     @ManyToOne()
     private Bench bench;
-
+    @OneToOne
+    @JoinColumn(name = "company_id")
+    private Company company;
+    private Character state;
 }
 

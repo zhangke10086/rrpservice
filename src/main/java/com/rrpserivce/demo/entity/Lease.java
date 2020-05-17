@@ -16,9 +16,9 @@ public class Lease {
     @Column(name = "contract_Id")
     private String contractId;
     @Column(name = "cost_way")
-    private String costWay;
+    private int costWay;
     @Column(name = "cost_month")
-    private String costMonth;
+    private int costMonth;
     @Column(name = "start_time")
     private Date startTime;
     @Column(name = "end_time")
@@ -42,4 +42,6 @@ public class Lease {
     private Character remind;
     private String state;
     private String uploadurl;
+    @Column(name = "payment_deadline")
+    private Date paymentdeadline;
 }

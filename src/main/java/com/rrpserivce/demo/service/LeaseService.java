@@ -68,7 +68,7 @@ public class LeaseService {
                     }
                     //租用企业 只能看自己数据
                     if (Integer.parseInt(jsonData.get("companytypeid").toString()) == 4 || Integer.parseInt(jsonData.get("companytypeid").toString()) == 3){
-                        if (!StringUtils.isEmpty(jsonData.get("companyid"))) {
+                        if (!StringUtils.isEmpty(jsonData.get("owncompanyid"))) {
                             predicates.add(criteriaBuilder.equal(root.get("companyId").get("id"),jsonData.get("owncompanyid").toString()));
                         }
                     }
@@ -80,7 +80,21 @@ public class LeaseService {
         return mpsPage;
     }
     //增加
-    public void add(Lease lease){leaseRepository.save(lease);}
+    public void add(Lease lease) throws ParseException {
+        leaseRepository.save(lease);
+//        Pay pay =new Pay();
+//        pay.setCompany(lease.getCompanyId());
+//        pay.setExamineSituation("待审核");
+//        pay.setLease(lease);
+//        pay.setPaymentAmount(lease.getCostWay());
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+        int month = lease.getCostWay()/lease.getCostMonth();
+        Calendar ca = Calendar.getInstance();
+        ca.setTime(lease.getStartTime());
+        ca.add(Calendar.MONTH,month);
+        lease.setPaymentdeadline(sdf.parse(sdf.format(ca.getTime())));
+
+    }
     //删除
     public void delete(int id){leaseRepository.deleteById(id);}
     //修改
@@ -113,10 +127,10 @@ public class LeaseService {
                 if (lease.getPaymentSituation()=='1'){
                     map.put("msg",lease.getRobot().getName()+"已欠费，请及时缴费！");
                 } else {
-                    Pay pay = payService.findByLeaseId(lease.getId());
-                    SimpleDateFormat sdf=new SimpleDateFormat("yyyy-MM-dd");
-                    String date2 = pay.getPaymentDeadline();
-                    long daysBetween = (sdf.parse(date2).getTime()-new Date().getTime())/(60*60*24*1000);
+//                    Pay pay = payService.findByLeaseId(lease.getId());
+//                    SimpleDateFormat sdf=new SimpleDateFormat("yyyy-MM-dd");
+//                    String date2 = pay.getPaymentDeadline();
+                    long daysBetween = (lease.getPaymentdeadline().getTime()-new Date().getTime())/(60*60*24*1000);
                     map.put("msg",lease.getRobot().getName()+"还有"+daysBetween+"天到期，请及时缴费！");
                 }
             }
