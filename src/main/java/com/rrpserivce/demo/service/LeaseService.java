@@ -187,9 +187,9 @@ public class LeaseService {
         approval.setRobot(pay.getRobot());
         approval.setState('0');
         approval.setRequest("续费审核");
-        leaseRepository.changePaymentSituation('2',pay.getLease().getId());
         payService.add(pay);
         approvalService.add(approval);
+        leaseRepository.changePaymentSituation('2',pay.getLease().getId());
     }
     //缴费审核通过
     public void ChangePaymentSituation(int id){
@@ -217,5 +217,27 @@ public class LeaseService {
         OutputStream out = new FileOutputStream(file1);
         out.write(bytes);
         return file1.getAbsolutePath();
+    }
+
+    public List<Lease> findLeaseByRobotAndCompany(Map<String, Object> jsonData){
+
+        Specification<Lease> mpsQuery = new Specification<Lease>() {
+            @Override
+            public Predicate toPredicate(Root<Lease> root, CriteriaQuery<?> criteriaQuery, CriteriaBuilder criteriaBuilder) {
+                List<Predicate> predicates = new ArrayList<>();
+                if (!StringUtils.isEmpty(jsonData.get("robotid"))) {
+                    predicates.add(criteriaBuilder.equal(root.get("robot").get("id"), jsonData.get("robotid").toString()));
+                }
+                if (!StringUtils.isEmpty(jsonData.get("companyid"))) {
+                    predicates.add(criteriaBuilder.equal(root.get("companyId").get("id"), jsonData.get("companyid").toString()));
+                }
+                if (!StringUtils.isEmpty(jsonData.get("belongcompanyid"))) {
+                    predicates.add(criteriaBuilder.equal(root.get("robot").get("belongingCompany").get("id"), jsonData.get("belongcompanyid").toString()));
+                }
+                return criteriaBuilder.and(predicates.toArray(new Predicate[predicates.size()]));
+            }
+        };
+        List<Lease> mpsPage = leaseRepository.findAll(mpsQuery);
+        return mpsPage;
     }
 }

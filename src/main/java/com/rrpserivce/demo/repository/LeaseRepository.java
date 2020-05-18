@@ -1,7 +1,5 @@
 package com.rrpserivce.demo.repository;
 import com.rrpserivce.demo.entity.Lease;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
@@ -33,4 +31,6 @@ public interface LeaseRepository extends JpaRepository<Lease, Integer> {
     @Modifying
     @Query(value = "update  lease set state = ?1 where id = ?2",nativeQuery = true)
     public void changeState(String state,int id);
+
+
 }
