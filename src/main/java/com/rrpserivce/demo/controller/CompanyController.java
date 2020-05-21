@@ -7,6 +7,8 @@ import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.Map;
+
 
 @RestController
 @CrossOrigin
@@ -132,6 +134,22 @@ public class CompanyController {
         CommonResult result = new CommonResult();
         try {
             result.setData(companyService.findByRobot(id));
+            return result;
+        } catch (Exception e){
+            e.printStackTrace();
+            result.setState(500);
+            result.setMsg("获取失败");
+            return result;
+        }
+    }
+
+
+    @PostMapping(value = "/company/queryCompany")
+    @ApiOperation(value = "动态查询企业")
+    public CommonResult QueryLease(@RequestBody Map<String, Object> jsonData){
+        CommonResult result = new CommonResult();
+        try {
+            result.setData(companyService.query(jsonData));
             return result;
         } catch (Exception e){
             e.printStackTrace();

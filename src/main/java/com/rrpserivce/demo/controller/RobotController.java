@@ -141,4 +141,20 @@ public class RobotController {
             return result;
         }
     }
+
+
+    @PostMapping(value = "/robot/QueryRobot")
+    @ApiOperation(value = "动态查询机器人")
+    public CommonResult QueryLease(@RequestBody Map<String, Object> jsonData){
+        CommonResult result = new CommonResult();
+        try {
+            result.setData(robotService.query(jsonData));
+            return result;
+        } catch (Exception e){
+            e.printStackTrace();
+            result.setState(500);
+            result.setMsg("获取失败");
+            return result;
+        }
+    }
 }
