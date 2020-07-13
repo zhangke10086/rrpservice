@@ -7,6 +7,8 @@ import com.rrpserivce.demo.entity.Robot;
 import com.rrpserivce.demo.repository.ApprovalRepository;
 import com.rrpserivce.demo.repository.LeaseRepository;
 import com.rrpserivce.demo.repository.RobotRepository;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
@@ -17,6 +19,7 @@ import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Predicate;
 import javax.persistence.criteria.Root;
+import javax.servlet.http.HttpServletRequest;
 import javax.transaction.Transactional;
 import java.io.File;
 import java.io.FileOutputStream;
@@ -39,7 +42,7 @@ public class LeaseService {
     private PayService payService;
     @Autowired
     private ApprovalService approvalService;
-
+    private static  final Logger logger = LoggerFactory.getLogger(LeaseService.class);
     public List<Lease> query(Map<String, Object> jsonData) {
 
         Specification<Lease> mpsQuery = new Specification<Lease>() {
@@ -201,22 +204,38 @@ public class LeaseService {
     }
 
     //上传合同 并返回url
-    public String upload(MultipartFile file) throws IOException {
-        //获取文件字节数组
-        byte [] bytes = file.getBytes();
+    public String upload(MultipartFile file, HttpServletRequest request) throws IOException {
+        String UPLOAD_PATH_PREFIX = "static/uploadFile/";
+        String realPath = new String("src/main/resources/" + UPLOAD_PATH_PREFIX);
         String fileName =file.getOriginalFilename();
-        //文件存储路径(/fileupload/ 这样会在根目录下创建问价夹)
-        File pfile = new File("/fileupload/");
-        if(!pfile.exists()){
-            //不存在时,创建文件夹
-            pfile.mkdirs();
+        logger.info("-----------文件名字【"+ fileName +"】-----------");
+        logger.info("-----------上传文件保存的路径【"+ realPath +"】-----------");
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy/MM/dd/");
+        String format = sdf.format(new Date());
+        //存放上传文件的文件夹
+        File file2 = new File(realPath + format);
+        logger.info("-----------存放上传文件的文件夹【"+ file2 +"】-----------");
+        logger.info("-----------输出文件夹绝对路径 -- 这里的绝对路径是相当于当前项目的路径而不是“容器”路径【"+ file2.getAbsolutePath() +"】-----------");
+        if(!file2.isDirectory()){
+            //递归生成文件夹
+            file2.mkdirs();
         }
-        //创建文件
-        File file1 = new File(pfile, fileName);
-        //写入指定文件夹
-        OutputStream out = new FileOutputStream(file1);
-        out.write(bytes);
-        return file1.getAbsolutePath();
+        try {
+            //构建真实的文件路径
+            File newFile = new File(file2.getAbsolutePath() + File.separator + fileName);
+            //转存文件到指定路径，如果文件名重复的话，将会覆盖掉之前的文件,这里是把文件上传到 “绝对路径”
+            file.transferTo(newFile);
+            String filePath = request.getScheme() + "://" + request.getServerName() + ":" + request.getServerPort() + "/uploadFile/" + format + fileName;
+            logger.info("-----------【"+ filePath +"】-----------");
+            return filePath;
+        } catch (Exception e) {
+            e.printStackTrace();
+            return "上传失败";
+        }
+//        //写入指定文件夹
+//        OutputStream out = new FileOutputStream(file2);
+//        out.write(bytes);
+//        return file2.getAbsolutePath();
     }
 
     public List<Lease> findLeaseByRobotAndCompany(Map<String, Object> jsonData){

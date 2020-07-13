@@ -9,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
+import javax.servlet.http.HttpServletRequest;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.OutputStream;
@@ -239,10 +240,10 @@ public class LeaseController {
 
     @PostMapping(value = "/lease/upload")
     @ApiOperation(value = "文件上传并返回url")
-    public CommonResult upload(@RequestBody MultipartFile file){
+    public CommonResult upload(@RequestBody MultipartFile file, HttpServletRequest request){
         CommonResult result = new CommonResult();
         try {
-            result.setData(leaseService.upload(file));
+            result.setData(leaseService.upload(file, request));
             return result;
         } catch (Exception e){
             e.printStackTrace();
