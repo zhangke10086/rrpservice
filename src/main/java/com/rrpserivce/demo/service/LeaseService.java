@@ -207,8 +207,10 @@ public class LeaseService {
     public String upload(MultipartFile file, HttpServletRequest request) throws IOException {
         String UPLOAD_PATH_PREFIX = "static/uploadFile/";
         String realPath = new String("src/main/resources/" + UPLOAD_PATH_PREFIX);
-        String fileName =file.getOriginalFilename();
-        logger.info("-----------文件名字【"+ fileName +"】-----------");
+        String oldName =file.getOriginalFilename();
+        logger.info("-----------文件原始的名字【"+ oldName +"】-----------");
+        String newName = UUID.randomUUID().toString() + oldName.substring(oldName.lastIndexOf("."),oldName.length());
+        logger.info("-----------文件要保存后的新名字【"+ newName +"】-----------");
         logger.info("-----------上传文件保存的路径【"+ realPath +"】-----------");
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy/MM/dd/");
         String format = sdf.format(new Date());
@@ -222,10 +224,10 @@ public class LeaseService {
         }
         try {
             //构建真实的文件路径
-            File newFile = new File(file2.getAbsolutePath() + File.separator + fileName);
+            File newFile = new File(file2.getAbsolutePath() + File.separator + newName);
             //转存文件到指定路径，如果文件名重复的话，将会覆盖掉之前的文件,这里是把文件上传到 “绝对路径”
             file.transferTo(newFile);
-            String filePath = request.getScheme() + "://" + request.getServerName() + ":" + request.getServerPort() + "/uploadFile/" + format + fileName;
+            String filePath = request.getScheme() + "://" + request.getServerName() + ":" + request.getServerPort() + "/uploadFile/" + format + newName;
             logger.info("-----------【"+ filePath +"】-----------");
             return filePath;
         } catch (Exception e) {
