@@ -35,4 +35,6 @@ public class Pay {
     @OneToOne
     @JoinColumn(name = "lease_id")
     private Lease lease;
+    @Column(name = "uploadurl")
+    private String uploadurl ;
 }
