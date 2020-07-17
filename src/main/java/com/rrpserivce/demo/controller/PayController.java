@@ -1,12 +1,15 @@
 package com.rrpserivce.demo.controller;
 import com.common.resformat.CommonResult;
 import com.rrpserivce.demo.entity.Pay;
+import com.rrpserivce.demo.service.LeaseService;
 import com.rrpserivce.demo.service.PayService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
+import javax.servlet.http.HttpServletRequest;
 import java.util.Map;
 
 
@@ -16,7 +19,8 @@ import java.util.Map;
 public class PayController {
     @Autowired
     private PayService payService;
-
+    @Autowired
+    private LeaseService leaseService;
     @PostMapping(value = "/lease/QueryPay")
     @ApiOperation(value = "动态查询缴费")
     public CommonResult QueryLease(@RequestBody Map<String, Object> jsonData){
@@ -122,6 +126,21 @@ public class PayController {
             e.printStackTrace();
             result.setState(500);
             result.setMsg("获取失败");
+            return result;
+        }
+    }
+
+    @PostMapping(value = "/pay/upload")
+    @ApiOperation(value = "文件上传并返回url")
+    public CommonResult upload(@RequestBody MultipartFile file, HttpServletRequest request){
+        CommonResult result = new CommonResult();
+        try {
+            result.setData(leaseService.upload(file, request));
+            return result;
+        } catch (Exception e){
+            e.printStackTrace();
+            result.setState(500);
+            result.setMsg("上传失败");
             return result;
         }
     }
