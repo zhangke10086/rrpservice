@@ -6,10 +6,14 @@ import org.springframework.data.jpa.repository.Query;
 
 import javax.transaction.Transactional;
 import java.util.List;
+import java.util.Set;
 
 public interface BenchRatioRepository extends JpaRepository<BenchRatio, Integer> {
     @Query(value = "select * from bench_ratio WHERE time BETWEEN ?1 AND ?2 and robot_id = ?3", nativeQuery = true)
-    List<BenchRatio> getRatio(String begin, String end, String robot_id);
+    Set<BenchRatio> getRatio(String begin, String end, String robot_id);
+
+    @Query(value = "select * from bench_ratio WHERE time BETWEEN ?1 AND ?2", nativeQuery = true)
+    Set<BenchRatio> getAllRatio(String begin, String end);
 
     @Query(value = "select * from bench_ratio WHERE time = ?", nativeQuery = true)
     List<BenchRatio> getRatioById(String time);

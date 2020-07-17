@@ -18,5 +18,17 @@ public class BenchRatio {
     private Date time;
     @ManyToOne()
     private Robot robot;
+
+    public Date getTime() {
+        return time;
+    }
+
+    public double getRatio() {
+        return ratio;
+    }
+
+    public void setRatio(double ratio) {
+        this.ratio = ratio;
+    }
 }
 
