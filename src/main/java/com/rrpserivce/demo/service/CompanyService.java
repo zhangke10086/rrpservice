@@ -1,13 +1,14 @@
 package com.rrpserivce.demo.service;
 
 import com.rrpserivce.demo.entity.Company;
-import com.rrpserivce.demo.entity.Robot;
-import com.rrpserivce.demo.entity.User;
+import com.rrpserivce.demo.repository.CityRepository;
 import com.rrpserivce.demo.repository.CompanyRepository;
+import com.rrpserivce.demo.repository.ProvinceRepository;
 import com.rrpserivce.demo.repository.RobotRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.StringUtils;
 
 import javax.persistence.criteria.CriteriaBuilder;
@@ -22,11 +23,37 @@ import java.util.Map;
 public class CompanyService {
     @Autowired
     private CompanyRepository companyRepository;
+    @Autowired
     private RobotRepository robotRepository;
+    @Autowired
+    private CityRepository cityRepository;
+    @Autowired
+    private ProvinceRepository provinceRepository;
     //增加
-    public void add(Company company){companyRepository.save(company);}
+    @Transactional
+    public void add(Company company){
+        companyRepository.save(company);
+        if (company.getCompanyType().getType().equals("租用企业") || company.getCompanyType().getType().equals("购买企业")){
+            String city_str = company.getCity();
+            String prov_str = company.getProvince();
+            cityRepository.addCityValue(city_str);
+            provinceRepository.addProValue(prov_str);
+            System.out.println("ok");
+        }
+    }
     //根据id删除
-    public void deleteById(int id){companyRepository.deleteById(id);}
+    @Transactional
+    public void deleteById(int id){
+        Company company1 = companyRepository.findById(id).get();
+        if (company1.getCompanyType().getType().equals("租用企业") || company1.getCompanyType().getType().equals("购买企业")){
+            String city_str = company1.getCity();
+            String prov_str = company1.getProvince();
+            cityRepository.deleteCityValue(city_str);
+            provinceRepository.deleteProValue(prov_str);
+            System.out.println("ok");
+        }
+        companyRepository.deleteById(id);
+    }
     //修改
     public void update(Company company){companyRepository.save(company);}
     //查找全部
