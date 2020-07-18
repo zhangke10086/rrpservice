@@ -7,10 +7,14 @@ import org.springframework.data.jpa.repository.Query;
 
 import javax.transaction.Transactional;
 import java.util.List;
+import java.util.Set;
 
 public interface BoardAreaRepository extends JpaRepository<BoardArea, Integer> {
     @Query(value = "select * from board_area WHERE time BETWEEN ?1 AND ?2 and robot_id = ?3", nativeQuery = true)
-    List<BoardArea> getArea(String begin, String end, String robot_id);
+    Set<BoardArea> getArea(String begin, String end, String robot_id);
+
+    @Query(value = "select * from board_area WHERE time BETWEEN ?1 AND ?2", nativeQuery = true)
+    Set<BoardArea> getAllArea(String begin, String end);
 
     @Query(value = "select * from board_area WHERE time = ?", nativeQuery = true)
     List<BoardArea> getAreaById(String time);

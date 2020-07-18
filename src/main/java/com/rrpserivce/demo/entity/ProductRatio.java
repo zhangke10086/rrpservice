@@ -18,5 +18,27 @@ public class ProductRatio {
     private Date time;
     @ManyToOne()
     private Robot robot;
+
+    public double getRatio() {
+        return ratio;
+    }
+
+    public Date getTime() {
+        return time;
+    }
+
+    public void setRatio(double ratio) {
+        this.ratio = ratio;
+    }
+
+    @Override
+    public String toString() {
+        return "ProductRatio{" +
+                "id=" + id +
+                ", ratio=" + ratio +
+                ", time=" + time +
+                ", robot=" + robot +
+                '}';
+    }
 }
 
