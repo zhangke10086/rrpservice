@@ -3,6 +3,7 @@ package com.rrpserivce.demo.service;
 import com.rrpserivce.demo.entity.BenchCount;
 import com.rrpserivce.demo.entity.BoardCount;
 import com.rrpserivce.demo.entity.ConcreteCount;
+import com.rrpserivce.demo.entity.Lease;
 import com.rrpserivce.demo.repository.BoardCountRepository;
 import org.apache.commons.lang3.time.DateUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,7 +18,8 @@ import java.util.stream.Collectors;
 public class BoardCountService {
     @Autowired
     private BoardCountRepository boardCountRepository;
-
+    //根据机器人id寻找最新的一个租赁
+    public BoardCount findNewestByRobot(String id){return boardCountRepository.findNewestByRobot_Id(id);}
     //查询
     public Set<BoardCount> getCount(String begin, String end, String robot_id) {
         if (robot_id.equals("null")) {

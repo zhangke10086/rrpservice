@@ -10,7 +10,7 @@ import java.util.List;
 
 @Repository
 public interface LeaseRepository extends JpaRepository<Lease, Integer> {
-    public List<Lease> findAllByRobot_Id(int id);
+    public List<Lease> findAllByRobot_Id(String id);
     public List<Lease> findAllByCompanyId_Id(int id);
     @Modifying
     @Query(value = "update  lease set remind = '1' where id=?1",nativeQuery = true)
@@ -32,5 +32,6 @@ public interface LeaseRepository extends JpaRepository<Lease, Integer> {
     @Query(value = "update  lease set state = ?1 where id = ?2",nativeQuery = true)
     public void changeState(String state,int id);
 
-
+    @Query(value = "select * from lease where robot_id = ?1 and id=(select max(id) from lease where robot_id = ?1);",nativeQuery = true)
+    public Lease findNewestByRobot_Id(String id);
 }

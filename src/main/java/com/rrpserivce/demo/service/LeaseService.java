@@ -83,6 +83,7 @@ public class LeaseService {
         return mpsPage;
     }
     //增加
+    @Transactional
     public void add(Lease lease) throws ParseException {
         leaseRepository.save(lease);
 //        Pay pay =new Pay();
@@ -96,7 +97,8 @@ public class LeaseService {
         ca.setTime(lease.getStartTime());
         ca.add(Calendar.MONTH,month);
         lease.setPaymentdeadline(sdf.parse(sdf.format(ca.getTime())));
-
+//        String robotId = lease.getRobot().getId();
+//        robotRepository.setZulin("租赁",robotId);
     }
     //删除
     public void delete(int id){leaseRepository.deleteById(id);}
@@ -107,7 +109,9 @@ public class LeaseService {
     //按id查找
     public Lease find(int id){return leaseRepository.findById(id).get();}
     //根据机器人id寻找
-    public List<Lease> findByRobot(int id){return leaseRepository.findAllByRobot_Id(id);}
+    public List<Lease> findByRobot(String id){return leaseRepository.findAllByRobot_Id(id);}
+    //根据机器人id寻找最新的一个租赁
+    public Lease findNewestByRobot(String id){return leaseRepository.findNewestByRobot_Id(id);}
     //根据租用企业寻找
     public List<Lease> findByCompany(int id){
         return leaseRepository.findAllByCompanyId_Id(id);

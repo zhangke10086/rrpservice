@@ -16,6 +16,21 @@ public class BoardCountController {
     @Autowired
     private BoardCountService boardCountService;
 
+    @GetMapping(value = "/boardCount/findNewestByRobot")
+    @ApiOperation(value = "根据机器人查找最新的叠合板数量")
+    public CommonResult findNewestByRobot(@RequestParam(value = "id")String id){
+        CommonResult result = new CommonResult();
+        try {
+            result.setData(boardCountService.findNewestByRobot(id));
+            return result;
+        } catch (Exception e){
+            e.printStackTrace();
+            result.setState(500);
+            result.setMsg("获取失败");
+            return result;
+        }
+    }
+
     @GetMapping(value = "/boardCount/getBoardCount")
     @ApiOperation("获取全部叠合板数量列表")
     public CommonResult getBoardCount(@RequestParam String date_begin, String date_end,String robot_id) {

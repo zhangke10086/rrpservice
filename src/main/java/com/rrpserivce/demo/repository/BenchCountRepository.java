@@ -3,6 +3,7 @@ package com.rrpserivce.demo.repository;
 import com.rrpserivce.demo.entity.Bench;
 import com.rrpserivce.demo.entity.BenchCount;
 import com.rrpserivce.demo.entity.BenchData;
+import com.rrpserivce.demo.entity.Lease;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
@@ -25,6 +26,8 @@ public interface BenchCountRepository extends JpaRepository<BenchCount, Integer>
     @Query(value = "select * from bench_count where robot_id = ?",nativeQuery = true)
     List<BenchCount> getByRobot(String robot_id);
 
+    @Query(value = "select * from bench_count where robot_id = ?1 and id=(select max(id) from bench_count where robot_id = ?1);",nativeQuery = true)
+    public BenchCount findNewestByRobot_Id(String id);
 
     public List<BenchCount> findAll(Specification<BenchCount> spec);
 }

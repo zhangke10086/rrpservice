@@ -2,6 +2,7 @@ package com.rrpserivce.demo.service;
 
 import com.rrpserivce.demo.entity.BenchCount;
 import com.rrpserivce.demo.entity.ConcreteCount;
+import com.rrpserivce.demo.entity.Lease;
 import com.rrpserivce.demo.entity.ProductRatio;
 import com.rrpserivce.demo.repository.ConcreteCountRepository;
 import org.apache.commons.lang3.time.DateUtils;
@@ -17,7 +18,8 @@ import java.util.stream.Collectors;
 public class ConcreteCountService {
     @Autowired
     private ConcreteCountRepository concreteCountRepository;
-
+    //根据机器人id寻找最新的一个租赁
+    public ConcreteCount findNewestByRobot(String id){return concreteCountRepository.findNewestByRobot_Id(id);}
     //查询
     public Set<ConcreteCount> getCount(String begin, String end, String robot_id) {
         if (robot_id.equals("null")) {

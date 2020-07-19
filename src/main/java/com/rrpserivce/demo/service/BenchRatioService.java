@@ -2,6 +2,7 @@ package com.rrpserivce.demo.service;
 
 import com.rrpserivce.demo.entity.BenchCount;
 import com.rrpserivce.demo.entity.BenchRatio;
+import com.rrpserivce.demo.entity.Lease;
 import com.rrpserivce.demo.entity.ProductRatio;
 import com.rrpserivce.demo.repository.BenchRatioRepository;
 import org.apache.commons.lang3.time.DateUtils;
@@ -17,7 +18,8 @@ import java.util.stream.Collectors;
 public class BenchRatioService {
     @Autowired
     private BenchRatioRepository benchRatioRepository;
-
+    //根据机器人id寻找最新的一个模台转换率
+    public BenchRatio findNewestByRobot(String id){return benchRatioRepository.findNewestByRobot_Id(id);}
     //查询
     public Set<BenchRatio> getRatio(String begin, String end, String robot_id) {
         if (robot_id.equals("null")) {

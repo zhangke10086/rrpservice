@@ -31,6 +31,20 @@ public class BenchCountController {
         }
     }
 
+    @GetMapping(value = "/benchCount/findNewestByRobot")
+    @ApiOperation(value = "根据机器人查找最新的模台个数")
+    public CommonResult findNewestByRobot(@RequestParam(value = "id")String id){
+        CommonResult result = new CommonResult();
+        try {
+            result.setData(benchCountService.findNewestByRobot(id));
+            return result;
+        } catch (Exception e){
+            e.printStackTrace();
+            result.setState(500);
+            result.setMsg("获取失败");
+            return result;
+        }
+    }
     @GetMapping(value = "/benchCount/getBenchCountByRobot")
     @ApiOperation("根据机器人获取全部列表")
 

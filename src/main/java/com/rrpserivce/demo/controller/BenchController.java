@@ -2,6 +2,7 @@ package com.rrpserivce.demo.controller;
 
 import com.rrpserivce.demo.entity.Bench;
 import com.common.resformat.CommonResult;
+import com.rrpserivce.demo.service.BenchCountService;
 import com.rrpserivce.demo.service.BenchDataService;
 import com.rrpserivce.demo.service.BenchService;
 import com.rrpserivce.demo.service.ProcessDataService;
@@ -22,6 +23,8 @@ public class BenchController {
     private BenchDataService benchDataService;
     @Autowired
     private ProcessDataService processDataService;
+    @Autowired
+    private BenchCountService benchCountService;
 
     @PostMapping(value = "/bench/QueryBench")
     @ApiOperation(value = "动态查询模台")

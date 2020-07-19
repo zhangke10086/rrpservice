@@ -3,7 +3,9 @@ import com.rrpserivce.demo.entity.Company;
 import com.rrpserivce.demo.entity.Robot;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
@@ -20,4 +22,8 @@ public interface RobotRepository extends JpaRepository<Robot, String> {
     // 查询租用被该企业使用的机器人
     @Query(value = "select distinct ro.* from robot ro inner join lease le on ro.id = le.robot_id  where le.company_id=?1",nativeQuery = true)
     List<Robot> findByComapnyid(int id);
+
+//    @Modifying
+//    @Query(value = "UPDATE robot SET way =:way WHERE id =:id",nativeQuery = true)
+//    void setZulin(@Param("way") String way, @Param("id") String id);
 }

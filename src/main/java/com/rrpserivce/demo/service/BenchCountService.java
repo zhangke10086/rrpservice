@@ -2,6 +2,7 @@ package com.rrpserivce.demo.service;
 
 import com.rrpserivce.demo.entity.Bench;
 import com.rrpserivce.demo.entity.BenchCount;
+import com.rrpserivce.demo.entity.Lease;
 import com.rrpserivce.demo.entity.ProductRatio;
 import com.rrpserivce.demo.repository.BenchCountRepository;
 import org.apache.commons.lang3.time.DateUtils;
@@ -39,7 +40,8 @@ public class BenchCountService {
         }
 
     }
-
+    //根据机器人id寻找最新的一个租赁
+    public BenchCount findNewestByRobot(String id){return benchCountRepository.findNewestByRobot_Id(id);}
     public List<BenchCount> findAllByRobot(String robot_id) {
         return benchCountRepository.getByRobot(robot_id);
     }

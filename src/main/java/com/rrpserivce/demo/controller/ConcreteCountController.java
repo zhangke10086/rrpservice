@@ -15,6 +15,20 @@ import java.util.Date;
 public class ConcreteCountController {
     @Autowired
     private ConcreteCountService concreteCountService;
+    @GetMapping(value = "/concreteCount/findNewestByRobot")
+    @ApiOperation(value = "根据机器人查找最新的混凝土方量")
+    public CommonResult findNewestByRobot(@RequestParam(value = "id")String id){
+        CommonResult result = new CommonResult();
+        try {
+            result.setData(concreteCountService.findNewestByRobot(id));
+            return result;
+        } catch (Exception e){
+            e.printStackTrace();
+            result.setState(500);
+            result.setMsg("获取失败");
+            return result;
+        }
+    }
 
     @GetMapping(value = "/concreteCount/getConcreteCount")
     @ApiOperation("获取全部混凝土方量列表")

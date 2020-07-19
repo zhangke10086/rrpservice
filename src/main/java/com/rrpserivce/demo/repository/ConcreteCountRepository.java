@@ -1,6 +1,7 @@
 package com.rrpserivce.demo.repository;
 
 import com.rrpserivce.demo.entity.ConcreteCount;
+import com.rrpserivce.demo.entity.Lease;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 
@@ -21,4 +22,7 @@ public interface ConcreteCountRepository extends JpaRepository<ConcreteCount, In
     @Transactional
     @Query(value = "select * from concrete_count where robot_id = ?",nativeQuery = true)
     List<ConcreteCount> getByRobot(String robot_id);
+
+    @Query(value = "select * from concrete_count where robot_id = ?1 and id=(select max(id) from concrete_count where robot_id = ?1);",nativeQuery = true)
+    public ConcreteCount findNewestByRobot_Id(String id);
 }

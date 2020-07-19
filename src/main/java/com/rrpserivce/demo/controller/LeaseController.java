@@ -106,10 +106,25 @@ public class LeaseController {
 
     @GetMapping(value = "/lease/findAllByRobot")
     @ApiOperation(value = "根据机器人查找所有租赁")
-    public CommonResult findAllByRobot(@RequestParam(value = "id")int id){
+    public CommonResult findAllByRobot(@RequestParam(value = "id")String id){
         CommonResult result = new CommonResult();
         try {
             result.setData(leaseService.findByRobot(id));
+            return result;
+        } catch (Exception e){
+            e.printStackTrace();
+            result.setState(500);
+            result.setMsg("获取失败");
+            return result;
+        }
+    }
+
+    @GetMapping(value = "/lease/findNewestByRobot")
+    @ApiOperation(value = "根据机器人查找最新的租赁")
+    public CommonResult findNewestByRobot(@RequestParam(value = "id")String id){
+        CommonResult result = new CommonResult();
+        try {
+            result.setData(leaseService.findNewestByRobot(id));
             return result;
         } catch (Exception e){
             e.printStackTrace();

@@ -3,6 +3,7 @@ package com.rrpserivce.demo.repository;
 import com.rrpserivce.demo.entity.BenchCount;
 import com.rrpserivce.demo.entity.BoardCount;
 import com.rrpserivce.demo.entity.BoardCount;
+import com.rrpserivce.demo.entity.Lease;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 
@@ -23,4 +24,7 @@ public interface BoardCountRepository extends JpaRepository<BoardCount, Integer>
     @Transactional
     @Query(value = "select * from board_count where robot_id = ?",nativeQuery = true)
     List<BoardCount> getByRobot(String robot_id);
+
+    @Query(value = "select * from board_count where robot_id = ?1 and id=(select max(id) from board_count where robot_id = ?1);",nativeQuery = true)
+    public BoardCount findNewestByRobot_Id(String id);
 }

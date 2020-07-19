@@ -1,6 +1,7 @@
 package com.rrpserivce.demo.repository;
 
 import com.rrpserivce.demo.entity.BenchRatio;
+import com.rrpserivce.demo.entity.Lease;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 
@@ -21,4 +22,7 @@ public interface BenchRatioRepository extends JpaRepository<BenchRatio, Integer>
     @Transactional
     @Query(value = "select * from bench_ratio where robot_id = ?",nativeQuery = true)
     List<BenchRatio> getByRobot(String robot_id);
+
+    @Query(value = "select * from bench_ratio where robot_id = ?1 and id=(select max(id) from bench_ratio where robot_id = ?1);",nativeQuery = true)
+    public BenchRatio findNewestByRobot_Id(String id);
 }

@@ -16,6 +16,21 @@ public class BoardAreaController {
     @Autowired
     private BoardAreaService boardAreaService;
 
+    @GetMapping(value = "/boardArea/findNewestByRobot")
+    @ApiOperation(value = "根据机器人查找最新的叠合板面积")
+    public CommonResult findNewestByRobot(@RequestParam(value = "id")String id){
+        CommonResult result = new CommonResult();
+        try {
+            result.setData(boardAreaService.findNewestByRobot(id));
+            return result;
+        } catch (Exception e){
+            e.printStackTrace();
+            result.setState(500);
+            result.setMsg("获取失败");
+            return result;
+        }
+    }
+
     @GetMapping(value = "/boardArea/getBoardArea")
     @ApiOperation("获取全部叠合板面积列表")
     public CommonResult getBoardArea(@RequestParam String date_begin, String date_end,String robot_id) {

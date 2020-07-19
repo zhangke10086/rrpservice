@@ -1,6 +1,7 @@
 package com.rrpserivce.demo.service;
 
 import com.rrpserivce.demo.entity.BoardArea;
+import com.rrpserivce.demo.entity.Lease;
 import com.rrpserivce.demo.repository.BoardAreaRepository;
 import org.apache.commons.lang3.time.DateUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,6 +19,9 @@ import java.util.stream.Collectors;
 public class BoardAreaService {
     @Autowired
     private BoardAreaRepository boardAreaRepository;
+
+    //根据机器人id寻找最新的一个租赁
+    public BoardArea findNewestByRobot(String id){return boardAreaRepository.findNewestByRobot_Id(id);}
 
     //查询
     public Set<BoardArea> getArea(String begin, String end,String robot_id) {
