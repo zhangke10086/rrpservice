@@ -18,5 +18,17 @@ public class BenchCount {
     private Date time;
     @ManyToOne()
     private Robot robot;
+
+    public int getCount() {
+        return count;
+    }
+
+    public Date getTime() {
+        return time;
+    }
+
+    public void setCount(int count) {
+        this.count = count;
+    }
 }
 

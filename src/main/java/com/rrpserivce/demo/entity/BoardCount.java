@@ -18,5 +18,17 @@ public class BoardCount {
     private Date time;
     @ManyToOne()
     private Robot robot;
+
+    public Date getTime() {
+        return time;
+    }
+
+    public double getCount() {
+        return count;
+    }
+
+    public void setCount(double count) {
+        this.count = count;
+    }
 }
 

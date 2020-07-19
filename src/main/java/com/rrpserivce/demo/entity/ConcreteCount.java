@@ -18,5 +18,17 @@ public class ConcreteCount {
     private Date time;
     @ManyToOne()
     private Robot robot;
+
+    public void setCount(double count) {
+        this.count = count;
+    }
+
+    public Date getTime() {
+        return time;
+    }
+
+    public double getCount() {
+        return count;
+    }
 }
 

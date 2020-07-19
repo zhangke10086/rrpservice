@@ -8,10 +8,14 @@ import org.springframework.data.jpa.repository.Query;
 
 import javax.transaction.Transactional;
 import java.util.List;
+import java.util.Set;
 
 public interface BoardCountRepository extends JpaRepository<BoardCount, Integer> {
     @Query(value = "select * from board_count WHERE time BETWEEN ?1 AND ?2 and robot_id = ?3", nativeQuery = true)
-    List<BoardCount> getCount(String begin, String end, String robot_id);
+    Set<BoardCount> getCount(String begin, String end, String robot_id);
+
+    @Query(value = "select * from board_count WHERE time BETWEEN ?1 AND ?2", nativeQuery = true)
+    Set<BoardCount> getAllCount(String begin, String end);
 
     @Query(value = "select * from board_count WHERE time = ?", nativeQuery = true)
     List<BoardCount> getCountById(String time);
