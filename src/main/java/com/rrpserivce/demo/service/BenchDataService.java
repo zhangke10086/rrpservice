@@ -30,6 +30,11 @@ public class BenchDataService {
         return benchDataRepository.findById(id).get();
     }
 
+    //根据id查找
+    public BenchData getByBenchMax(int id) {
+        return benchDataRepository.getByBenchMax(id);
+    }
+
     //增加
     public void add(BenchData benchManage) {
         benchDataRepository.save(benchManage);

@@ -62,6 +62,20 @@ public class BenchDataController {
             return result;
         }
     }
+@GetMapping(value = "/benchData/getByBenchMax")
+    @ApiOperation("根据id查找模台参数")
+    public CommonResult getByBenchMax(@RequestParam int bench_id) {
+        CommonResult result = new CommonResult();
+        try {
+            result.setData(benchDataService.getByBenchMax(bench_id));
+            return result;
+        } catch (Exception e) {
+            e.printStackTrace();
+            result.setState(500);
+            result.setMsg("获取失败");
+            return result;
+        }
+    }
 
     @PutMapping(value = "/benchData/updateBenchData")
     @ApiOperation("修改模台参数")
