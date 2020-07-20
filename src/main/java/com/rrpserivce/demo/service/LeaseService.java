@@ -240,6 +240,22 @@ public class LeaseService {
 //        return file2.getAbsolutePath();
     }
 
+    public List<Lease> findRobotByCity(Map<String, Object> jsonData){
+
+        Specification<Lease> mpsQuery = new Specification<Lease>() {
+            @Override
+            public Predicate toPredicate(Root<Lease> root, CriteriaQuery<?> criteriaQuery, CriteriaBuilder criteriaBuilder) {
+                List<Predicate> predicates = new ArrayList<>();
+                if (!StringUtils.isEmpty(jsonData.get("city"))) {
+                    predicates.add(criteriaBuilder.equal(root.get("companyId").get("city"), jsonData.get("city").toString()));
+                }
+                return criteriaBuilder.and(predicates.toArray(new Predicate[predicates.size()]));
+            }
+        };
+        List<Lease> mpsPage = leaseRepository.findAll(mpsQuery);
+        return mpsPage;
+    }
+
     public List<Lease> findLeaseByRobotAndCompany(Map<String, Object> jsonData){
 
         Specification<Lease> mpsQuery = new Specification<Lease>() {
