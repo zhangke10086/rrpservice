@@ -19,4 +19,8 @@ public class CompanyType implements Serializable,Comparable<CompanyType> {
     public int compareTo(CompanyType o) {
         return this.id - o.id;
     }
+
+    public String getType() {
+        return type;
+    }
 }

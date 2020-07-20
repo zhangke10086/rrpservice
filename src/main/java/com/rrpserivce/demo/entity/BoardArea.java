@@ -18,5 +18,21 @@ public class BoardArea {
     private Date time;
     @ManyToOne()
     private Robot robot;
+
+    public double getArea() {
+        return area;
+    }
+
+    public void setArea(double area) {
+        this.area = area;
+    }
+
+    public Date getTime() {
+        return time;
+    }
+
+    public void setTime(Date time) {
+        this.time = time;
+    }
 }
 

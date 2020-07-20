@@ -70,6 +70,7 @@ public class RobotController {
         CommonResult result = new CommonResult();
         try {
             result.setData(robotService.findAll());
+            System.out.println(robotService.findAll().get(1).toString());
             return result;
         } catch (Exception e){
             e.printStackTrace();

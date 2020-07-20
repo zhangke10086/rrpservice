@@ -17,6 +17,8 @@ public class Robot {
     private String way;
     @Column(name = "use_situation")
     private String use_situation;
+    @Column(name = "shengchanxian")
+    private String shengchanxian;
     @OneToOne
     @JoinColumn(name = "belonging_company",referencedColumnName = "id")
     private Company belongingCompany;

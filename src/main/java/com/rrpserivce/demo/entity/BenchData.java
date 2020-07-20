@@ -21,6 +21,6 @@ public class BenchData {
     @OneToOne
     @JoinColumn(name = "company_id")
     private Company company;
-    private Character state;
+    private String state;
 }
 

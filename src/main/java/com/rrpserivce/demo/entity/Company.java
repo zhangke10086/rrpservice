@@ -27,4 +27,16 @@ public class Company {
     @OneToOne
     @JoinColumn(name = "type",referencedColumnName = "type")
     private CompanyType companyType;
+
+    public CompanyType getCompanyType() {
+        return companyType;
+    }
+
+    public String getCity() {
+        return city;
+    }
+
+    public String getProvince() {
+        return province;
+    }
 }

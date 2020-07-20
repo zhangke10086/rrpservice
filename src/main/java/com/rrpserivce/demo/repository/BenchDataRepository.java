@@ -2,6 +2,7 @@ package com.rrpserivce.demo.repository;
 
 
 import com.rrpserivce.demo.entity.BenchData;
+import com.rrpserivce.demo.entity.ProcessData;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
@@ -19,4 +20,7 @@ public interface BenchDataRepository extends JpaRepository<BenchData, Integer> {
     @Query(value = "select * from bench_data where bench_id = ?",nativeQuery = true)
     List<BenchData> getByRobot(String robot_id);
     public List<BenchData> findAll(Specification<BenchData> spec);
+    @Transactional
+    @Query(value = "select * from bench_data where bench_id = ? order by id DESC limit 1",nativeQuery = true)
+    BenchData getByBenchMax(int bench_id);
 }
