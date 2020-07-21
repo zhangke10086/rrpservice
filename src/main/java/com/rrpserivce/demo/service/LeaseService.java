@@ -25,6 +25,7 @@ import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.OutputStream;
+import java.net.URISyntaxException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.*;
@@ -99,7 +100,21 @@ public class LeaseService {
 
     }
     //删除
-    public void delete(int id){leaseRepository.deleteById(id);}
+    public void delete(int id) throws URISyntaxException {
+        String uploadurl = this.find(id).getUploadurl();
+        int i = uploadurl.indexOf("u");
+        String filePath = uploadurl.substring(i,uploadurl.length());
+        String fileUtl = this.getClass().getResource("/static/"+filePath).toURI().getPath();
+        logger.info("文件url:{}"+ fileUtl);
+        File file = new File(fileUtl);
+        if(file.isFile()&&file.exists()){
+            file.delete();
+            logger.info("---------------已删除文件!");
+        } else {
+            logger.error("--------------删除失败！未找到文件-------------");
+        }
+        leaseRepository.deleteById(id);
+    }
     //修改
     public void update(Lease lease){leaseRepository.save(lease);}
     //查找全部
