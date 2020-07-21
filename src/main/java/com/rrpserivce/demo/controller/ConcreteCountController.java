@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.Date;
+import java.util.Map;
 
 @RestController
 @CrossOrigin()
@@ -16,20 +17,21 @@ public class ConcreteCountController {
     @Autowired
     private ConcreteCountService concreteCountService;
 
-    @GetMapping(value = "/concreteCount/getConcreteCount")
-    @ApiOperation("获取全部混凝土方量列表")
-    public CommonResult getConcreteCount(@RequestParam String date_begin, String date_end, String robot_id) {
+    @PostMapping(value = "/concreteCount/query")
+    @ApiOperation(value = "动态查询用户")
+    public CommonResult query(@RequestBody Map<String, Object> jsonData){
         CommonResult result = new CommonResult();
         try {
-            result.setData(concreteCountService.getCount(date_begin, date_end,robot_id));
+            result.setData(concreteCountService.query(jsonData));
             return result;
-        } catch (Exception e) {
+        } catch (Exception e){
             e.printStackTrace();
             result.setState(500);
             result.setMsg("获取失败");
             return result;
         }
     }
+
 
     @GetMapping(value = "/concreteCount/getConcreteCountByRobot")
     @ApiOperation("根据机器人获取全部列表")

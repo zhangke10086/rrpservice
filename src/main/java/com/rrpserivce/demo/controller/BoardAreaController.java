@@ -7,7 +7,8 @@ import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.Date;
+import java.util.Map;
+
 
 @RestController
 @CrossOrigin()
@@ -16,14 +17,14 @@ public class BoardAreaController {
     @Autowired
     private BoardAreaService boardAreaService;
 
-    @GetMapping(value = "/boardArea/getBoardArea")
-    @ApiOperation("获取全部叠合板面积列表")
-    public CommonResult getBoardArea(@RequestParam String date_begin, String date_end,String robot_id) {
+    @PostMapping(value = "/boardArea/query")
+    @ApiOperation(value = "动态查询用户")
+    public CommonResult query(@RequestBody Map<String, Object> jsonData){
         CommonResult result = new CommonResult();
         try {
-            result.setData(boardAreaService.getArea(date_begin, date_end,robot_id));
+            result.setData(boardAreaService.query(jsonData));
             return result;
-        } catch (Exception e) {
+        } catch (Exception e){
             e.printStackTrace();
             result.setState(500);
             result.setMsg("获取失败");
@@ -33,7 +34,6 @@ public class BoardAreaController {
 
     @GetMapping(value = "/boardArea/getBoardAreaByRobot")
     @ApiOperation("根据机器人获取全部列表")
-
     public CommonResult getBoardAreaByRobot(String robot_id) {
         CommonResult result = new CommonResult();
         try {

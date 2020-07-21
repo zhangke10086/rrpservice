@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.Date;
+import java.util.Map;
 
 @RestController
 @CrossOrigin()
@@ -15,21 +16,21 @@ import java.util.Date;
 public class BoardCountController {
     @Autowired
     private BoardCountService boardCountService;
-
-    @GetMapping(value = "/boardCount/getBoardCount")
-    @ApiOperation("获取全部叠合板数量列表")
-    public CommonResult getBoardCount(@RequestParam String date_begin, String date_end,String robot_id) {
+    @PostMapping(value = "/boardCount/query")
+    @ApiOperation(value = "动态查询用户")
+    public CommonResult query(@RequestBody Map<String, Object> jsonData){
         CommonResult result = new CommonResult();
         try {
-            result.setData(boardCountService.getCount(date_begin, date_end,robot_id));
+            result.setData(boardCountService.query(jsonData));
             return result;
-        } catch (Exception e) {
+        } catch (Exception e){
             e.printStackTrace();
             result.setState(500);
             result.setMsg("获取失败");
             return result;
         }
     }
+
 
     @GetMapping(value = "/boardCount/getBoardCountByRobot")
     @ApiOperation("根据机器人获取全部列表")

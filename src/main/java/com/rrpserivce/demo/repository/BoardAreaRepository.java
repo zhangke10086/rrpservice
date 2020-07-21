@@ -1,6 +1,6 @@
 package com.rrpserivce.demo.repository;
 
-import com.rrpserivce.demo.entity.BenchRatio;
+
 import com.rrpserivce.demo.entity.BoardArea;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
@@ -11,10 +11,19 @@ import java.util.Set;
 
 public interface BoardAreaRepository extends JpaRepository<BoardArea, Integer> {
     @Query(value = "select * from board_area WHERE time BETWEEN ?1 AND ?2 and robot_id = ?3", nativeQuery = true)
-    Set<BoardArea> getArea(String begin, String end, String robot_id);
+    Set<BoardArea> getAreaWithRobot(String begin, String end, String robot_id);
 
     @Query(value = "select * from board_area WHERE time BETWEEN ?1 AND ?2", nativeQuery = true)
     Set<BoardArea> getAllArea(String begin, String end);
+
+    @Query(value = "select * from board_area WHERE time BETWEEN ?1 AND ?2 and robot_id in (select id from robot where belonging_company = ?3)", nativeQuery = true)
+    Set<BoardArea> getAreaWithCompany(String begin, String end, String company_id);
+
+    @Query(value = "select * from board_area WHERE time BETWEEN ?1 AND ?2 and robot_id in (select id from robot where belonging_company in (select id from company where city=?3))", nativeQuery = true)
+    Set<BoardArea> getAreaWithCity(String begin, String end, String city_name);
+
+    @Query(value = "select * from board_area WHERE time BETWEEN ?1 AND ?2 and robot_id in (select id from robot where belonging_company in (select id from company where province=?3))", nativeQuery = true)
+    Set<BoardArea> getAreaWithProvince(String begin, String end, String province_name);
 
     @Query(value = "select * from board_area WHERE time = ?", nativeQuery = true)
     List<BoardArea> getAreaById(String time);

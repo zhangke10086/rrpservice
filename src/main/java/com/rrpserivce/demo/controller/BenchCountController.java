@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.Date;
+import java.util.Map;
 
 @RestController
 @CrossOrigin()
@@ -16,20 +17,7 @@ public class BenchCountController {
     @Autowired
     private BenchCountService benchCountService;
 
-    @GetMapping(value = "/benchCount/getBenchCount")
-    @ApiOperation("获取全部模台个数列表")
-    public CommonResult getBenchCount(@RequestParam String date_begin, String date_end,String robot_id) {
-        CommonResult result = new CommonResult();
-        try {
-            result.setData(benchCountService.getCount(date_begin, date_end,robot_id));
-            return result;
-        } catch (Exception e) {
-            e.printStackTrace();
-            result.setState(500);
-            result.setMsg("获取失败");
-            return result;
-        }
-    }
+
 
     @GetMapping(value = "/benchCount/getBenchCountByRobot")
     @ApiOperation("根据机器人获取全部列表")
@@ -62,5 +50,20 @@ public class BenchCountController {
         }
     }
 
+
+    @PostMapping(value = "/benchCount/query")
+    @ApiOperation(value = "动态查询用户")
+    public CommonResult QueryLease(@RequestBody Map<String, Object> jsonData){
+        CommonResult result = new CommonResult();
+        try {
+            result.setData(benchCountService.query(jsonData));
+            return result;
+        } catch (Exception e){
+            e.printStackTrace();
+            result.setState(500);
+            result.setMsg("获取失败");
+            return result;
+        }
+    }
 
 }
