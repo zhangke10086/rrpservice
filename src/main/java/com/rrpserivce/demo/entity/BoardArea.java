@@ -15,6 +15,8 @@ public class BoardArea {
     @Column()
     private double area;
     @Column()
+    private double plan_area;
+    @Column()
     private Date time;
     @ManyToOne()
     private Robot robot;

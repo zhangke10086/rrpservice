@@ -15,6 +15,8 @@ public class BenchCount {
     @Column()
     private int count;
     @Column()
+    private int plan_count;
+    @Column()
     private Date time;
     @ManyToOne()
     private Robot robot;

@@ -16,6 +16,8 @@ public class ConcreteCount {
     private double count;
     @Column()
     private Date time;
+    @Column()
+    private int plan_count;
     @ManyToOne()
     private Robot robot;
 
