@@ -282,4 +282,18 @@ public class LeaseController {
             return result;
         }
     }
+    @PostMapping(value = "/lease/findRobotByCity")
+    @ApiOperation(value = "根据机器人和企业查询租赁信息")
+    public CommonResult findRobotByCity(@RequestBody Map<String, Object> jsonData){
+        CommonResult result = new CommonResult();
+        try {
+            result.setData(leaseService.findRobotByCity(jsonData));
+            return result;
+        } catch (Exception e){
+            e.printStackTrace();
+            result.setState(500);
+            result.setMsg("上传失败");
+            return result;
+        }
+    }
 }

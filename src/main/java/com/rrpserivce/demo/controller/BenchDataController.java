@@ -50,7 +50,7 @@ public class BenchDataController {
 
     @GetMapping(value = "/benchData/getBenchDataById")
     @ApiOperation("根据id查找模台参数")
-    public CommonResult getBenchDataById(@RequestBody int id) {
+    public CommonResult getBenchDataById(@RequestParam int id) {
         CommonResult result = new CommonResult();
         try {
             result.setData(benchDataService.findById(id));
