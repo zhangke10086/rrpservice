@@ -30,6 +30,9 @@ public interface ConcreteCountRepository extends JpaRepository<ConcreteCount, In
     @Query(value = "select * from concrete_count WHERE time = ?", nativeQuery = true)
     List<ConcreteCount> getCountById(String time);
 
+    @Query(value = "select * from concrete_count where robot_id = ?1 and id=(select max(id) from concrete_count where robot_id = ?1);",nativeQuery = true)
+    public ConcreteCount findNewestByRobot_Id(String id);
+
     @Transactional
     @Query(value = "select * from concrete_count where robot_id = ?",nativeQuery = true)
     List<ConcreteCount> getByRobot(String robot_id);

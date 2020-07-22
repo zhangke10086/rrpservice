@@ -13,13 +13,15 @@ public class ConcreteCount {
     @Column(name = "id")
     private int id;
     @Column()
-    private double count;
+    private Integer count;
     @Column()
     private Date time;
+    @Column
+    private Integer plan_count;
     @ManyToOne()
     private Robot robot;
 
-    public void setCount(double count) {
+    public void setCount(Integer count) {
         this.count = count;
     }
 

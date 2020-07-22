@@ -54,7 +54,7 @@ public class BoardCountService {
             List<BoardCount> repeats =
                     allCount.stream().filter(s-> DateUtils.isSameDay(s.getTime(), single.getTime())).collect(Collectors.toList());
             if (repeats.size()>1){
-                double mean = 0;
+                int mean = 0;
                 for (BoardCount c: repeats) mean+=c.getCount();
                 single.setCount(mean);
             }
@@ -62,6 +62,8 @@ public class BoardCountService {
         return set;
     }
 
+    //根据机器人id寻找最新的一个租赁
+    public BoardCount findNewestByRobot(String id){return boardCountRepository.findNewestByRobot_Id(id);}
 
     public List<BoardCount> findAllByRobot(String robot_id) {
         return boardCountRepository.getByRobot(robot_id);

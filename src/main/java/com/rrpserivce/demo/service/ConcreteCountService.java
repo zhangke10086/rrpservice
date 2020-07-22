@@ -54,7 +54,7 @@ public class ConcreteCountService {
             List<ConcreteCount> repeats =
                     allCount.stream().filter(s-> DateUtils.isSameDay(s.getTime(), single.getTime())).collect(Collectors.toList());
             if (repeats.size()>1){
-                double mean = 0;
+                int mean = 0;
                 for (ConcreteCount ratio1: repeats) mean+=ratio1.getCount();
 //                mean/=repeats.size();
                 single.setCount(mean);
@@ -63,6 +63,8 @@ public class ConcreteCountService {
         return set;
     }
 
+    //根据机器人id寻找最新的一个租赁
+    public ConcreteCount findNewestByRobot(String id){return concreteCountRepository.findNewestByRobot_Id(id);}
 
 
     public List<ConcreteCount> findAllByRobot(String robot_id) {

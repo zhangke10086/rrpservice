@@ -28,6 +28,9 @@ public interface BoardAreaRepository extends JpaRepository<BoardArea, Integer> {
     @Query(value = "select * from board_area WHERE time = ?", nativeQuery = true)
     List<BoardArea> getAreaById(String time);
 
+    @Query(value = "select * from board_area where robot_id = ?1 and id=(select max(id) from board_area where robot_id = ?1);",nativeQuery = true)
+    public BoardArea findNewestByRobot_Id(String id);
+
     @Transactional
     @Query(value = "select * from board_area where robot_id = ?",nativeQuery = true)
     List<BoardArea> getByRobot(String robot_id);

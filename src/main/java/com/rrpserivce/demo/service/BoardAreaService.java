@@ -62,6 +62,8 @@ public class BoardAreaService {
         return set;
     }
 
+    //根据机器人id寻找最新的一个租赁
+    public BoardArea findNewestByRobot(String id){return boardAreaRepository.findNewestByRobot_Id(id);}
 
     public List<BoardArea> findAllByRobot(String robot_id) {
         return boardAreaRepository.getByRobot(robot_id);

@@ -25,8 +25,10 @@ public interface BoardCountRepository extends JpaRepository<BoardCount, Integer>
 
     @Query(value = "select * from board_count WHERE time BETWEEN ?1 AND ?2 and robot_id in (select id from robot where belonging_company in (select id from company where province=?3))", nativeQuery = true)
     Set<BoardCount> getCountWithProvince(String begin, String end, String province_name);
-    
-    
+
+
+    @Query(value = "select * from board_count where robot_id = ?1 and id=(select max(id) from board_count where robot_id = ?1);",nativeQuery = true)
+    public BoardCount findNewestByRobot_Id(String id);
     
     @Query(value = "select * from board_count WHERE time = ?", nativeQuery = true)
     List<BoardCount> getCountById(String time);

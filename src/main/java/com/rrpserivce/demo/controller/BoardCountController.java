@@ -7,7 +7,6 @@ import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.Date;
 import java.util.Map;
 
 @RestController
@@ -22,6 +21,20 @@ public class BoardCountController {
         CommonResult result = new CommonResult();
         try {
             result.setData(boardCountService.query(jsonData));
+            return result;
+        } catch (Exception e){
+            e.printStackTrace();
+            result.setState(500);
+            result.setMsg("获取失败");
+            return result;
+        }
+    }
+    @GetMapping(value = "/boardCount/findNewestByRobot")
+    @ApiOperation(value = "根据机器人查找最新的叠合板数量")
+    public CommonResult findNewestByRobot(@RequestParam(value = "id")String id){
+        CommonResult result = new CommonResult();
+        try {
+            result.setData(boardCountService.findNewestByRobot(id));
             return result;
         } catch (Exception e){
             e.printStackTrace();

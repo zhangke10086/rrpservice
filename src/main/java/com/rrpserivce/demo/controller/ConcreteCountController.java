@@ -31,7 +31,20 @@ public class ConcreteCountController {
             return result;
         }
     }
-
+    @GetMapping(value = "/concreteCount/findNewestByRobot")
+    @ApiOperation(value = "根据机器人查找最新的混凝土方量")
+    public CommonResult findNewestByRobot(@RequestParam(value = "id")String id){
+        CommonResult result = new CommonResult();
+        try {
+            result.setData(concreteCountService.findNewestByRobot(id));
+            return result;
+        } catch (Exception e){
+            e.printStackTrace();
+            result.setState(500);
+            result.setMsg("获取失败");
+            return result;
+        }
+    }
 
     @GetMapping(value = "/concreteCount/getConcreteCountByRobot")
     @ApiOperation("根据机器人获取全部列表")

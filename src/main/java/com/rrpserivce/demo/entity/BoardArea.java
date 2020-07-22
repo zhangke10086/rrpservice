@@ -14,6 +14,8 @@ public class BoardArea {
     private int id;
     @Column()
     private double area;
+    @Column
+    private Double plan_area;
     @Column()
     private Date time;
     @ManyToOne()
