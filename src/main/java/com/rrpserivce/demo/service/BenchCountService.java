@@ -67,6 +67,8 @@ public class BenchCountService {
         }
         return set;
     }
+    //根据机器人id寻找最新的一个租赁
+    public BenchCount findNewestByRobot(String id){return benchCountRepository.findNewestByRobot_Id(id);}
 
     public List<BenchCount> findAllByRobot(String robot_id) {
         return benchCountRepository.getByRobot(robot_id);

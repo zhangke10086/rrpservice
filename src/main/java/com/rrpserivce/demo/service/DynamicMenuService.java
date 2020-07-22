@@ -4,17 +4,19 @@ package com.rrpserivce.demo.service;
 import com.rrpserivce.demo.entity.DynamicMenu;
 import com.rrpserivce.demo.entity.Menu;
 import com.rrpserivce.demo.repository.DynamicMenuRepository;
+import com.rrpserivce.demo.repository.MenuRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.HashSet;
-import java.util.Set;
-import java.util.TreeSet;
+import java.util.*;
+import java.util.stream.Collector;
+import java.util.stream.Collectors;
 
 @Service
 public class DynamicMenuService {
     @Autowired
     private DynamicMenuRepository dynamicMenuRepository;
+    private MenuRepository menuRepository;
     @Autowired
     private MenuService menuService;
 
@@ -25,14 +27,14 @@ public class DynamicMenuService {
      * @return
      */
     public Set<DynamicMenu> getDynamicMenu(Integer user_id){
-        Set<Menu> initialList =  dynamicMenuRepository.getDynamicMenu(user_id);
+        Set<Menu> initialList =  new HashSet<>(menuService.findAll());
         Set<DynamicMenu> finalList = new TreeSet<>();
         for (Menu initialListMenu: initialList){
             String parentMenu = initialListMenu.getMenu();
             if (parentMenu != null)
                 finalList.add(new DynamicMenu(
                         menuService.findById(Integer.parseInt(parentMenu)),
-                        dynamicMenuRepository.getDynamicMenuByMenu_id(user_id, Integer.parseInt(parentMenu))));
+                        dynamicMenuRepository.getAllChildrenMenu(Integer.parseInt(parentMenu))));
         }
         // 该加不进去的就加不进去，
         for (Menu initialListMenu: initialList) {
@@ -52,7 +54,8 @@ public class DynamicMenuService {
             if (parentMenu != null)
                 finalList.add(new DynamicMenu(
                         menuService.findById(Integer.parseInt(parentMenu)),
-                        dynamicMenuRepository.getDynamicMenuByMenu_id(dynamicMenuRepository.getIdByUsername(username), Integer.parseInt(parentMenu))));
+                        dynamicMenuRepository.getDynamicMenuByMenu_id(dynamicMenuRepository.getIdByUsername(username),
+                                Integer.parseInt(parentMenu))));
         }
         // 该加不进去的就加不进去，
         for (Menu initialListMenu: initialList) {

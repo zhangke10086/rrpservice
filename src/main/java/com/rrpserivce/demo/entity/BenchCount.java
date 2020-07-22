@@ -13,6 +13,8 @@ public class BenchCount {
     @Column(name = "id")
     private int id;
     @Column()
+    private Integer plan_count;
+    @Column()
     private int count;
     @Column()
     private Date time;
