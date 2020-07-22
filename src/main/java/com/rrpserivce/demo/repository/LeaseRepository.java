@@ -24,6 +24,9 @@ public interface LeaseRepository extends JpaRepository<Lease, Integer> {
     @Query(value = "select * from  lease where company_id =?1 and remind = '1'",nativeQuery = true)
     public List<Lease> findRemind(int id);
 
+    @Query(value = "select * from lease where robot_id = ?1 and id=(select max(id) from lease where robot_id = ?1);",nativeQuery = true)
+    public Lease findNewestByRobot_Id(String id);
+
     @Modifying
     @Query(value = "update  lease set payment_situation = ?1 where id =?2",nativeQuery = true)
     public void changePaymentSituation(Character c,int id);

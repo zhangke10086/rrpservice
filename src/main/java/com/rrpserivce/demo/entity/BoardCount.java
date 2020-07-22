@@ -16,9 +16,9 @@ public class BoardCount {
     @Column()
     private Integer count;
     @Column()
-    private Date time;
-    @Column
     private Integer plan_count;
+    @Column()
+    private Date time;
     @ManyToOne()
     private Robot robot;
 

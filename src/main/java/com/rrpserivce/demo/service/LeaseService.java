@@ -43,6 +43,9 @@ public class LeaseService {
     @Autowired
     private ApprovalService approvalService;
     private static  final Logger logger = LoggerFactory.getLogger(LeaseService.class);
+    //根据机器人id寻找最新的一个租赁
+    public Lease findNewestByRobot(String id){return leaseRepository.findNewestByRobot_Id(id);}
+
     public List<Lease> query(Map<String, Object> jsonData) {
 
         Specification<Lease> mpsQuery = new Specification<Lease>() {
@@ -261,4 +264,5 @@ public class LeaseService {
         List<Lease> mpsPage = leaseRepository.findAll(mpsQuery);
         return mpsPage;
     }
+
 }
