@@ -14,6 +14,8 @@ public class Warning {
     private int id;
     @Column()
     private Date time;
+    @Column()
+    private String location;
 //    @Column()
 //    private Boolean machine_signal0;
 //    @Column()
