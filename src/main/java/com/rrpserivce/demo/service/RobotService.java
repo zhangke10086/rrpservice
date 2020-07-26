@@ -28,6 +28,8 @@ public class RobotService {
     public void update(Robot robot){robotRepository.save(robot);}
     //查全部
     public List<Robot> findAll(){return robotRepository.findAll();}
+    //查全部
+    public List<Robot> getByCompany(int company_id){return robotRepository.getByCompany(company_id);}
     //按id查找
     public Robot find(String id){return robotRepository.findById(id).get();}
     //根据企业id号查找

@@ -17,6 +17,12 @@ public class RunService {
         return runRepository.getRatio(begin, end);
     }
 
+
+    //查询
+    public List<Run> getRatioByCompany(int company_id, String begin, String end) {
+        return runRepository.getRatioByCompany(company_id, begin, end);
+    }
+
     //根据id查询
     public List<Run> getRatioById(String time) {
         return runRepository.getRatioById(time);

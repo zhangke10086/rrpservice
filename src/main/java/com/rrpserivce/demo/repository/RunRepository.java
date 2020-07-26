@@ -10,6 +10,9 @@ public interface RunRepository extends JpaRepository<Run, Integer> {
     @Query(value = "select * from run WHERE time BETWEEN ?1 AND ?2", nativeQuery = true)
     List<Run> getRatio(String begin, String end);
 
+    @Query(value = "select * from run WHERE company_id = ?1 and time BETWEEN ?2 AND ?3", nativeQuery = true)
+    List<Run> getRatioByCompany(int company_id, String begin, String end);
+
     @Query(value = "select * from run WHERE time = ?", nativeQuery = true)
     List<Run> getRatioById(String time);
 }

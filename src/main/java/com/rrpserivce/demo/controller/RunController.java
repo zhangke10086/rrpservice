@@ -30,6 +30,21 @@ public class RunController {
         }
     }
 
+    @GetMapping(value = "/run/getRunByCompany")
+    @ApiOperation("获取全部运行数据列表")
+    public CommonResult getRatioByCompany(@RequestParam int company_id, String date_begin, String date_end) {
+        CommonResult result = new CommonResult();
+        try {
+            result.setData(runService.getRatioByCompany(company_id, date_begin, date_end));
+            return result;
+        } catch (Exception e) {
+            e.printStackTrace();
+            result.setState(500);
+            result.setMsg("获取失败");
+            return result;
+        }
+    }
+
     @GetMapping(value = "/run/getRunById")
     @ApiOperation("根据id获取全部运行数据列表")
     public CommonResult getRunById(@RequestParam String time) {
