@@ -15,4 +15,9 @@ public interface RunRepository extends JpaRepository<Run, Integer> {
 
     @Query(value = "select * from run WHERE time = ?", nativeQuery = true)
     List<Run> getRatioById(String time);
+
+    @Query(value = "SELECT * from run where company_id = ? ORDER BY time desc LIMIT 10", nativeQuery = true)
+    List<Run> getRatioLate(int company_id);
 }
+
+

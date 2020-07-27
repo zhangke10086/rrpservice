@@ -60,5 +60,20 @@ public class RunController {
         }
     }
 
+    @GetMapping(value = "/run/getRatioLate")
+    @ApiOperation("根据获取全部最新运行数据列表")
+    public CommonResult getRatioLate(@RequestParam int company_id) {
+        CommonResult result = new CommonResult();
+        try {
+            result.setData(runService.getRatioLate(company_id));
+            return result;
+        } catch (Exception e) {
+            e.printStackTrace();
+            result.setState(500);
+            result.setMsg("获取失败");
+            return result;
+        }
+    }
+
 
 }

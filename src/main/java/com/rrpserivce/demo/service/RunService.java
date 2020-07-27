@@ -28,4 +28,9 @@ public class RunService {
         return runRepository.getRatioById(time);
     }
 
+    //根据id查询
+    public List<Run> getRatioLate(int company_id) {
+        return runRepository.getRatioLate(company_id);
+    }
+
 }
