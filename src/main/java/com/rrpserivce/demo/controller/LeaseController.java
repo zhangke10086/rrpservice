@@ -281,4 +281,20 @@ public class LeaseController {
             return result;
         }
     }
+
+    @PostMapping(value = "/wxwh/upload")
+    @ApiOperation(value = "操作指南上传")
+    public CommonResult uploadInstruction(@RequestBody MultipartFile file, HttpServletRequest request){
+        CommonResult result = new CommonResult();
+        try {
+            leaseService.uploadInstruction(file, request);
+            result.setData("成功");
+            return result;
+        } catch (Exception e){
+            e.printStackTrace();
+            result.setState(500);
+            result.setMsg("上传失败");
+            return result;
+        }
+    }
 }

@@ -287,5 +287,26 @@ public class LeaseService {
         List<Lease> mpsPage = leaseRepository.findAll(mpsQuery);
         return mpsPage;
     }
-
+    public void uploadInstruction(MultipartFile file, HttpServletRequest request) throws IOException, URISyntaxException {
+        String realPath = new String("src/main/resources/static");
+        String fileName = "instruction.pdf";
+        logger.info("-----------文件要保存后的名字【"+ fileName +"】-----------");
+        //存放上传文件的文件夹
+        File file2 = new File(realPath);
+        if(!file2.isDirectory()){
+            //递归生成文件夹
+            file2.mkdirs();
+        }
+        try {
+            //构建真实的文件路径
+            File newFile = new File(file2.getAbsolutePath() + File.separator + fileName);
+            //转存文件到指定路径，如果文件名重复的话，将会覆盖掉之前的文件,这里是把文件上传到 “绝对路径”
+            file.transferTo(newFile);
+            String filePath = request.getScheme() + "://" + request.getServerName() + ":" + request.getServerPort() + "/"+fileName;
+            logger.info("------------------------上传成功！--------------------------");
+            logger.info("-----------【"+ filePath +"】-----------");
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
 }
