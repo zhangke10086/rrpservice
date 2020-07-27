@@ -240,10 +240,10 @@ public class LeaseController {
 
     @PostMapping(value = "/lease/upload")
     @ApiOperation(value = "文件上传并返回url")
-    public CommonResult upload(@RequestBody MultipartFile file, HttpServletRequest request){
+    public CommonResult upload(@RequestBody MultipartFile file, HttpServletRequest request,int leaseid){
         CommonResult result = new CommonResult();
         try {
-            result.setData(leaseService.upload(file, request));
+            result.setData(leaseService.upload(file, request,leaseid));
             return result;
         } catch (Exception e){
             e.printStackTrace();

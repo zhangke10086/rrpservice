@@ -1,9 +1,6 @@
 package com.rrpserivce.demo.service;
 
-import com.rrpserivce.demo.entity.Approval;
-import com.rrpserivce.demo.entity.Lease;
-import com.rrpserivce.demo.entity.Pay;
-import com.rrpserivce.demo.entity.Robot;
+import com.rrpserivce.demo.entity.*;
 import com.rrpserivce.demo.repository.ApprovalRepository;
 import com.rrpserivce.demo.repository.LeaseRepository;
 import com.rrpserivce.demo.repository.RobotRepository;
@@ -43,6 +40,8 @@ public class LeaseService {
     private PayService payService;
     @Autowired
     private ApprovalService approvalService;
+    @Autowired
+    private RobotService robotService;
     private static  final Logger logger = LoggerFactory.getLogger(LeaseService.class);
     public List<Lease> query(Map<String, Object> jsonData) {
 
@@ -84,23 +83,16 @@ public class LeaseService {
         return mpsPage;
     }
     //增加
-    public void add(Lease lease) throws ParseException {
+    public void add(Lease lease)  {
         leaseRepository.save(lease);
-//        Pay pay =new Pay();
-//        pay.setCompany(lease.getCompanyId());
-//        pay.setExamineSituation("待审核");
-//        pay.setLease(lease);
-//        pay.setPaymentAmount(lease.getCostWay());
-        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
-        int month = lease.getCostWay()/lease.getCostMonth();
-        Calendar ca = Calendar.getInstance();
-        ca.setTime(lease.getStartTime());
-        ca.add(Calendar.MONTH,month);
-        lease.setPaymentdeadline(sdf.parse(sdf.format(ca.getTime())));
-
+        //更新robot表 company
+        Company company = lease.getCompanyId();
+        Robot robot = lease.getRobot();
+        robot.setCompany(company);
+        this.robotService.update(robot);
     }
-    //删除
-    public void delete(int id) throws URISyntaxException {
+    //删除文件
+    public void deleteFile(int id) throws URISyntaxException {
         String uploadurl = this.find(id).getUploadurl();
         int i = uploadurl.indexOf("u");
         String filePath = uploadurl.substring(i,uploadurl.length());
@@ -113,6 +105,10 @@ public class LeaseService {
         } else {
             logger.error("--------------删除失败！未找到文件-------------");
         }
+    }
+    //删除
+    public void delete(int id) throws URISyntaxException {
+        this.deleteFile(id);
         leaseRepository.deleteById(id);
     }
     //修改
@@ -219,7 +215,11 @@ public class LeaseService {
     }
 
     //上传合同 并返回url
-    public String upload(MultipartFile file, HttpServletRequest request) throws IOException {
+    public String upload(MultipartFile file, HttpServletRequest request,int id) throws IOException, URISyntaxException {
+        if(!StringUtils.isEmpty(id)){
+            // 删除文件
+            this.deleteFile(id);
+        }
         String UPLOAD_PATH_PREFIX = "static/uploadFile/";
         String realPath = new String("src/main/resources/" + UPLOAD_PATH_PREFIX);
         String oldName =file.getOriginalFilename();
@@ -249,11 +249,7 @@ public class LeaseService {
             e.printStackTrace();
             return "上传失败";
         }
-//        //写入指定文件夹
-//        OutputStream out = new FileOutputStream(file2);
-//        out.write(bytes);
-//        return file2.getAbsolutePath();
-    }
+}
 
     public List<Lease> findLeaseByRobotAndCompany(Map<String, Object> jsonData){
 
