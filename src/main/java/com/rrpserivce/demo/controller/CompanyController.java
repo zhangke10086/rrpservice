@@ -78,7 +78,20 @@ public class CompanyController {
             return result;
         }
     }
-
+    @GetMapping(value = "/company/findLeaseCompany")
+    @ApiOperation(value = "查找所有出租购买类型的企业")
+    public CommonResult findLeaseCompany(){
+        CommonResult result = new CommonResult();
+        try {
+            result.setData(companyService.findAllBy2Keys("租用企业","购买企业"));
+            return result;
+        } catch (Exception e){
+            e.printStackTrace();
+            result.setState(500);
+            result.setMsg("获取失败");
+            return result;
+        }
+    }
     @GetMapping(value = "/company/findAllCompanysByTowKeys")
     @ApiOperation(value = "查找所有有用机器人的企业")
     public CommonResult findAllByTowKeys(){

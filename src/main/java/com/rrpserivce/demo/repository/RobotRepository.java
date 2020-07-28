@@ -26,4 +26,7 @@ public interface RobotRepository extends JpaRepository<Robot, String> {
     @Transactional
     @Query(value = "select * from robot where belonging_company = ?",nativeQuery = true)
     List<Robot> getByCompany(int company_id);
+
+    @Query(value = "SELECT * from robot ro inner join lease le on le.robot_id=ro.id where belonging_company = ?1 and le.end_time < NOW()",nativeQuery = true)
+    List<Robot> findAllByBelongCompanyid(int id);
 }

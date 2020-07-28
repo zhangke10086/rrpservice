@@ -126,6 +126,20 @@ public class RobotController {
             return result;
         }
     }
+    @GetMapping(value = "/robot/findAllByBelongCompanyAndCanBeLeased")
+    @ApiOperation(value = "按企业id查找机器人")
+    public CommonResult findAllByBelongCompany(@RequestParam(value = "id")int id){
+        CommonResult result = new CommonResult();
+        try {
+            result.setData(robotService.findByBelongingCompanyAndCanBeLease(id));
+            return result;
+        } catch (Exception e){
+            e.printStackTrace();
+            result.setState(500);
+            result.setMsg("获取失败");
+            return result;
+        }
+    }
 
     @GetMapping(value = "/robot/findAllByCompanyid")
     @ApiOperation(value = "按企业id查找被该企业使用的机器人")
