@@ -14,4 +14,8 @@ public interface BenchRepository extends JpaRepository<Bench, Integer> {
     @Query(value = "select * from bench where robot_id = ?",nativeQuery = true)
     List<Bench> getByRobot(String robot_id);
     List<Bench> findAll(Specification<Bench> spec);
+
+@Transactional
+    @Query(value = "select * from bench where company_id = ?",nativeQuery = true)
+    List<Bench> getByCompany(int company_id);
 }

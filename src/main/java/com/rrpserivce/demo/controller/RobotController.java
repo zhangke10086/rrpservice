@@ -96,6 +96,21 @@ public class RobotController {
         }
     }
 
+    @GetMapping(value = "/robot/getByCompany")
+    @ApiOperation(value = "查找机器人")
+    public CommonResult getByCompany(@RequestParam int company_id) {
+        CommonResult result = new CommonResult();
+        try {
+            result.setData(robotService.getByCompany(company_id));
+            return result;
+        } catch (Exception e) {
+            e.printStackTrace();
+            result.setState(500);
+            result.setMsg("获取失败");
+            return result;
+        }
+    }
+
 
     @GetMapping(value = "/robot/findAllByCompany")
     @ApiOperation(value = "按企业id查找机器人")
@@ -103,6 +118,20 @@ public class RobotController {
         CommonResult result = new CommonResult();
         try {
             result.setData(robotService.findAllByBelongingCompany(id));
+            return result;
+        } catch (Exception e){
+            e.printStackTrace();
+            result.setState(500);
+            result.setMsg("获取失败");
+            return result;
+        }
+    }
+    @GetMapping(value = "/robot/findAllByBelongCompanyAndCanBeLeased")
+    @ApiOperation(value = "按企业id查找机器人")
+    public CommonResult findAllByBelongCompany(@RequestParam(value = "id")int id){
+        CommonResult result = new CommonResult();
+        try {
+            result.setData(robotService.findByBelongingCompanyAndCanBeLease(id));
             return result;
         } catch (Exception e){
             e.printStackTrace();

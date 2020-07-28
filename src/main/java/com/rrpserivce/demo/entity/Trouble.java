@@ -6,9 +6,9 @@ import javax.persistence.*;
 import java.util.Date;
 
 @Entity
-@Table(name = "warning")
+@Table(name = "trouble")
 @Data
-public class Warning {
+public class Trouble {
     @Id
     @Column(name = "id")
     private int id;
@@ -16,7 +16,7 @@ public class Warning {
     private Date time;
     @Column()
     private String location;
-//    @Column()
+    //    @Column()
 //    private Boolean machine_signal0;
 //    @Column()
 //    private Boolean machine_signal1;
@@ -68,7 +68,7 @@ public class Warning {
 //    private Boolean machine_signal24;
     @ManyToOne()
     private Robot robot;
-@ManyToOne()
+    @ManyToOne()
     private WarnContent num;
     @OneToOne
     @JoinColumn(name = "company_id")

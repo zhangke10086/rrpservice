@@ -22,4 +22,7 @@ public class Robot {
     @OneToOne
     @JoinColumn(name = "belonging_company",referencedColumnName = "id")
     private Company belongingCompany;
+    @OneToOne
+    @JoinColumn(name = "companyid",referencedColumnName = "id")
+    private Company company;
 }

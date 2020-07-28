@@ -28,13 +28,18 @@ public class RobotService {
     public void update(Robot robot){robotRepository.save(robot);}
     //查全部
     public List<Robot> findAll(){return robotRepository.findAll();}
+    //查全部
+    public List<Robot> getByCompany(int company_id){return robotRepository.getByCompany(company_id);}
     //按id查找
     public Robot find(String id){return robotRepository.findById(id).get();}
     //根据企业id号查找
     public List<Robot> findAllByBelongingCompany(int id){
         return robotRepository.findAllByBelongingCompany_Id(id);
     }
-
+    // 根据所属企业查找未被租赁的机器人
+    public List<Robot> findByBelongingCompanyAndCanBeLease(int id){
+        return robotRepository.findAllByBelongCompanyid(id);
+    }
     //出租企业查找 租用企业下的全部机器人
     public List<Robot> findByComapny(Map<String,Object> jsondata){
         String companyid = null == jsondata.get("companyid")? null:jsondata.get("companyid").toString();

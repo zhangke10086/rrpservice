@@ -254,10 +254,10 @@ public class LeaseController {
 
     @PostMapping(value = "/lease/upload")
     @ApiOperation(value = "文件上传并返回url")
-    public CommonResult upload(@RequestBody MultipartFile file, HttpServletRequest request){
+    public CommonResult upload(@RequestBody MultipartFile file, HttpServletRequest request,int leaseid){
         CommonResult result = new CommonResult();
         try {
-            result.setData(leaseService.upload(file, request));
+            result.setData(leaseService.upload(file, request,leaseid));
             return result;
         } catch (Exception e){
             e.printStackTrace();
@@ -273,6 +273,36 @@ public class LeaseController {
         CommonResult result = new CommonResult();
         try {
             result.setData(leaseService.findLeaseByRobotAndCompany(jsonData));
+            return result;
+        } catch (Exception e){
+            e.printStackTrace();
+            result.setState(500);
+            result.setMsg("上传失败");
+            return result;
+        }
+    }
+    @PostMapping(value = "/lease/findRobotByCity")
+    @ApiOperation(value = "根据机器人和企业查询租赁信息")
+    public CommonResult findRobotByCity(@RequestBody Map<String, Object> jsonData){
+        CommonResult result = new CommonResult();
+        try {
+            result.setData(leaseService.findRobotByCity(jsonData));
+            return result;
+        } catch (Exception e){
+            e.printStackTrace();
+            result.setState(500);
+            result.setMsg("上传失败");
+            return result;
+        }
+    }
+
+    @PostMapping(value = "/wxwh/upload")
+    @ApiOperation(value = "操作指南上传")
+    public CommonResult uploadInstruction(@RequestBody MultipartFile file, HttpServletRequest request){
+        CommonResult result = new CommonResult();
+        try {
+            leaseService.uploadInstruction(file, request);
+            result.setData("成功");
             return result;
         } catch (Exception e){
             e.printStackTrace();

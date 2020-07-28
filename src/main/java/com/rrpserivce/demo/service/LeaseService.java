@@ -1,9 +1,6 @@
 package com.rrpserivce.demo.service;
 
-import com.rrpserivce.demo.entity.Approval;
-import com.rrpserivce.demo.entity.Lease;
-import com.rrpserivce.demo.entity.Pay;
-import com.rrpserivce.demo.entity.Robot;
+import com.rrpserivce.demo.entity.*;
 import com.rrpserivce.demo.repository.ApprovalRepository;
 import com.rrpserivce.demo.repository.LeaseRepository;
 import com.rrpserivce.demo.repository.RobotRepository;
@@ -25,6 +22,7 @@ import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.OutputStream;
+import java.net.URISyntaxException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.*;
@@ -42,10 +40,9 @@ public class LeaseService {
     private PayService payService;
     @Autowired
     private ApprovalService approvalService;
+    @Autowired
+    private RobotService robotService;
     private static  final Logger logger = LoggerFactory.getLogger(LeaseService.class);
-    //根据机器人id寻找最新的一个租赁
-    public Lease findNewestByRobot(String id){return leaseRepository.findNewestByRobot_Id(id);}
-
     public List<Lease> query(Map<String, Object> jsonData) {
 
         Specification<Lease> mpsQuery = new Specification<Lease>() {
@@ -86,23 +83,34 @@ public class LeaseService {
         return mpsPage;
     }
     //增加
-    public void add(Lease lease) throws ParseException {
+    public void add(Lease lease)  {
         leaseRepository.save(lease);
-//        Pay pay =new Pay();
-//        pay.setCompany(lease.getCompanyId());
-//        pay.setExamineSituation("待审核");
-//        pay.setLease(lease);
-//        pay.setPaymentAmount(lease.getCostWay());
-        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
-        int month = lease.getCostWay()/lease.getCostMonth();
-        Calendar ca = Calendar.getInstance();
-        ca.setTime(lease.getStartTime());
-        ca.add(Calendar.MONTH,month);
-        lease.setPaymentdeadline(sdf.parse(sdf.format(ca.getTime())));
-
+        //更新robot表 company
+        Company company = lease.getCompanyId();
+        Robot robot = lease.getRobot();
+        robot.setCompany(company);
+        this.robotService.update(robot);
+    }
+    //删除文件
+    public void deleteFile(int id) throws URISyntaxException {
+        String uploadurl = this.find(id).getUploadurl();
+        int i = uploadurl.indexOf("u");
+        String filePath = uploadurl.substring(i,uploadurl.length());
+        String fileUtl = this.getClass().getResource("/static/"+filePath).toURI().getPath();
+        logger.info("文件url:{}"+ fileUtl);
+        File file = new File(fileUtl);
+        if(file.isFile()&&file.exists()){
+            file.delete();
+            logger.info("---------------已删除文件!");
+        } else {
+            logger.error("--------------删除失败！未找到文件-------------");
+        }
     }
     //删除
-    public void delete(int id){leaseRepository.deleteById(id);}
+    public void delete(int id) throws URISyntaxException {
+        this.deleteFile(id);
+        leaseRepository.deleteById(id);
+    }
     //修改
     public void update(Lease lease){leaseRepository.save(lease);}
     //查找全部
@@ -207,7 +215,11 @@ public class LeaseService {
     }
 
     //上传合同 并返回url
-    public String upload(MultipartFile file, HttpServletRequest request) throws IOException {
+    public String upload(MultipartFile file, HttpServletRequest request,int id) throws IOException, URISyntaxException {
+        if(!StringUtils.isEmpty(id)){
+            // 删除文件
+            this.deleteFile(id);
+        }
         String UPLOAD_PATH_PREFIX = "static/uploadFile/";
         String realPath = new String("src/main/resources/" + UPLOAD_PATH_PREFIX);
         String oldName =file.getOriginalFilename();
@@ -237,11 +249,7 @@ public class LeaseService {
             e.printStackTrace();
             return "上传失败";
         }
-//        //写入指定文件夹
-//        OutputStream out = new FileOutputStream(file2);
-//        out.write(bytes);
-//        return file2.getAbsolutePath();
-    }
+}
 
     public List<Lease> findLeaseByRobotAndCompany(Map<String, Object> jsonData){
 
@@ -264,5 +272,41 @@ public class LeaseService {
         List<Lease> mpsPage = leaseRepository.findAll(mpsQuery);
         return mpsPage;
     }
+    public List<Lease> findRobotByCity(Map<String, Object> jsonData){
 
+        Specification<Lease> mpsQuery = new Specification<Lease>() {
+            @Override
+            public Predicate toPredicate(Root<Lease> root, CriteriaQuery<?> criteriaQuery, CriteriaBuilder criteriaBuilder) {
+                List<Predicate> predicates = new ArrayList<>();
+                if (!StringUtils.isEmpty(jsonData.get("city"))) {
+                    predicates.add(criteriaBuilder.equal(root.get("companyId").get("city"), jsonData.get("city").toString()));
+                }
+                return criteriaBuilder.and(predicates.toArray(new Predicate[predicates.size()]));
+            }
+        };
+        List<Lease> mpsPage = leaseRepository.findAll(mpsQuery);
+        return mpsPage;
+    }
+    public void uploadInstruction(MultipartFile file, HttpServletRequest request) throws IOException, URISyntaxException {
+        String realPath = new String("src/main/resources/static");
+        String fileName = "instruction.pdf";
+        logger.info("-----------文件要保存后的名字【"+ fileName +"】-----------");
+        //存放上传文件的文件夹
+        File file2 = new File(realPath);
+        if(!file2.isDirectory()){
+            //递归生成文件夹
+            file2.mkdirs();
+        }
+        try {
+            //构建真实的文件路径
+            File newFile = new File(file2.getAbsolutePath() + File.separator + fileName);
+            //转存文件到指定路径，如果文件名重复的话，将会覆盖掉之前的文件,这里是把文件上传到 “绝对路径”
+            file.transferTo(newFile);
+            String filePath = request.getScheme() + "://" + request.getServerName() + ":" + request.getServerPort() + "/"+fileName;
+            logger.info("------------------------上传成功！--------------------------");
+            logger.info("-----------【"+ filePath +"】-----------");
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
 }

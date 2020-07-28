@@ -1,7 +1,9 @@
 package com.rrpserivce.demo.service;
 
-import com.rrpserivce.demo.entity.Run;
-import com.rrpserivce.demo.repository.RunRepository;
+import com.rrpserivce.demo.entity.Trouble;
+import com.rrpserivce.demo.entity.RobotData;
+import com.rrpserivce.demo.entity.Trouble;
+import com.rrpserivce.demo.repository.TroubleRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
@@ -16,40 +18,48 @@ import java.util.List;
 import java.util.Map;
 
 @Service
-public class RunService {
+public class TroubleService {
     @Autowired
-    private RunRepository runRepository;
+    private TroubleRepository troubleRepository;
 
-    //查询
-    public List<Run> getRatio(String begin, String end) {
-        return runRepository.getRatio(begin, end);
+    //查询全部
+    public List<Trouble> findAll() {
+        return troubleRepository.findAll();
     }
 
-
-    //查询
-    public List<Run> getRatioByCompany(int company_id, String begin, String end) {
-        return runRepository.getRatioByCompany(company_id, begin, end);
+    //根据id查找
+    public Trouble findById(int id) {
+        return troubleRepository.findById(id).get();
     }
 
-    //根据id查询
-    public List<Run> getRatioById(String time) {
-        return runRepository.getRatioById(time);
+    //增加
+    public void add(Trouble trouble) {
+        troubleRepository.save(trouble);
     }
 
-    //根据id查询
-    public List<Run> getRatioLate(int company_id) {
-        return runRepository.getRatioLate(company_id);
+    //修改
+    public void update(Trouble trouble) {
+        troubleRepository.save(trouble);
+    }
+
+    //根据id删除
+    public void deleteById(int id) {
+        troubleRepository.deleteById(id);
+    }
+
+    public List<Trouble> findAllByRobot(String robot_id) {
+        return troubleRepository.getByRobot(robot_id);
     }
 
     //动态查询
-    public List<Run> query(Map<String, Object> jsonData) {
+    public List<Trouble> query(Map<String, Object> jsonData) {
 
-        Specification<Run> mpsQuery = new Specification<Run>() {
+        Specification<Trouble> mpsQuery = new Specification<Trouble>() {
             @Override
-            public Predicate toPredicate(Root<Run> root, CriteriaQuery<?> criteriaQuery, CriteriaBuilder criteriaBuilder) {
+            public Predicate toPredicate(Root<Trouble> root, CriteriaQuery<?> criteriaQuery, CriteriaBuilder criteriaBuilder) {
                 List<Predicate> predicates = new ArrayList<>();
                 if (!StringUtils.isEmpty(jsonData.get("province"))) {
-                    //equal为相等  root.get("") 即为 run.get()                          jsonData.get()即为前端传参 jsondata
+                    //equal为相等  root.get("") 即为 bench.get()                          jsonData.get()即为前端传参 jsondata
                     predicates.add(criteriaBuilder.equal(root.get("company").get("province"), jsonData.get("province").toString()));
                 }
                 if (!StringUtils.isEmpty(jsonData.get("city"))) {
@@ -71,6 +81,7 @@ public class RunService {
                     }
                     //租用企业 只能看自己数据
                     if (Integer.parseInt(jsonData.get("companytypeid").toString()) == 4 || Integer.parseInt(jsonData.get("companytypeid").toString()) == 3) {
+
                         if (!StringUtils.isEmpty(jsonData.get("owncompanyid"))) {
                             predicates.add(criteriaBuilder.equal(root.get("company").get("id"), jsonData.get("owncompanyid").toString()));
                         }
@@ -79,7 +90,7 @@ public class RunService {
                 return criteriaBuilder.and(predicates.toArray(new Predicate[predicates.size()]));
             }
         };
-        List<Run> mpsPage = runRepository.findAll(mpsQuery);
+        List<Trouble> mpsPage = troubleRepository.findAll(mpsQuery);
         return mpsPage;
     }
 

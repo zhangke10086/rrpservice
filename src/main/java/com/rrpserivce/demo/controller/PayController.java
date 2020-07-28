@@ -132,10 +132,10 @@ public class PayController {
 
     @PostMapping(value = "/pay/upload")
     @ApiOperation(value = "文件上传并返回url")
-    public CommonResult upload(@RequestBody MultipartFile file, HttpServletRequest request){
+    public CommonResult upload(@RequestBody MultipartFile file, HttpServletRequest request,int id){
         CommonResult result = new CommonResult();
         try {
-            result.setData(leaseService.upload(file, request));
+            result.setData(leaseService.upload(file, request,id));
             return result;
         } catch (Exception e){
             e.printStackTrace();
