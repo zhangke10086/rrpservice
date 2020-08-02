@@ -2,7 +2,12 @@ package com.rrpserivce.demo.service;
 
 import com.rrpserivce.demo.entity.Run;
 import com.rrpserivce.demo.repository.RunRepository;
+import net.bytebuddy.TypeCache;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
@@ -46,20 +51,23 @@ public class RunService {
 
     //动态查询
     public List<Run> query(Map<String, Object> jsonData) {
-
+//        int page = Integer.parseInt(jsonData.get("page").toString());
+//        int rows = Integer.parseInt(jsonData.get("rows").toString());
+        Sort sort = Sort.by(Sort.Order.desc("time"));
+        Pageable pageable = PageRequest.of(0, 20, sort);
         Specification<Run> mpsQuery = new Specification<Run>() {
             @Override
             public Predicate toPredicate(Root<Run> root, CriteriaQuery<?> criteriaQuery, CriteriaBuilder criteriaBuilder) {
                 List<Predicate> predicates = new ArrayList<>();
                 if (!StringUtils.isEmpty(jsonData.get("startdate")) || !StringUtils.isEmpty(jsonData.get("enddate"))) {
-                    java.text.SimpleDateFormat formatter = new SimpleDateFormat( "yyyy-MM-dd");
-                    String s= jsonData.get("startdate").toString();
-                    String s1= jsonData.get("enddate").toString();
+                    java.text.SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
+                    String s = jsonData.get("startdate").toString();
+                    String s1 = jsonData.get("enddate").toString();
                     Date date = new Date();
                     Date date1 = new Date();
                     try {
-                        date =  formatter.parse(s);
-                        date1 =  formatter.parse(s1);
+                        date = formatter.parse(s);
+                        date1 = formatter.parse(s1);
                     } catch (ParseException e) {
                         e.printStackTrace();
                     }
@@ -97,7 +105,15 @@ public class RunService {
                 return criteriaBuilder.and(predicates.toArray(new Predicate[predicates.size()]));
             }
         };
-        List<Run> mpsPage = runRepository.findAll(mpsQuery);
+        List<Run> mpsPage = null;
+        if (StringUtils.isEmpty(jsonData.get("check"))){
+            mpsPage = runRepository.findAll(mpsQuery, pageable);
+        }
+        else {
+            mpsPage = runRepository.findAll(mpsQuery);
+        }
+
+//        List<Run> mpsPage = runRepository.getPage(mpsQuery,pageable);
         return mpsPage;
     }
 
